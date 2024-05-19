@@ -1,0 +1,10 @@
+.anime-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.anime {
+  margin-top: 50px;
+  flex-basis: 20%;
+  flex-grow: 1;
+}

@@ -1,0 +1,10 @@
+.navigation {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  
+}
+
+.navigation a {
+  margin-left: 15px;
+}
