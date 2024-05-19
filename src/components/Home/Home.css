@@ -5,6 +5,29 @@
 
 .anime {
   margin-top: 50px;
-  flex-basis: 20%;
+  margin-left: 20px;
+  /* margin-right: 20px; */
+  flex-basis: 15%;
   flex-grow: 1;
+  height: 410px;
+  width: 150px;
+  background: lightblue;
+  overflow: hidden;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+
+.anime-title {
+  text-decoration: none;
+  height: 70px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #343434;
+  font-weight: 700;
 }

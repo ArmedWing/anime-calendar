@@ -28,8 +28,10 @@ const Home = () => {
         {searchedAnime.map((anime) => (
           <div key={anime.mal_id} className="anime">
             {" "}
-            <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
-            <div>{anime.title}</div>
+            <a href={`${anime.url}`} className="anime-card">
+              <div className="anime-title">{anime.title}</div>
+              <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
+            </a>
           </div>
         ))}
       </div>
