@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import SearchContext from "./context/search";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
+import Logout from "./components/Logout/Logout";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -37,10 +38,10 @@ function App() {
           <Header />
           <section>
             <Routes>
-              {/* <Route path="/header" element={<Header />} /> */}
               <Route path="/home" element={<Home />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
             </Routes>
           </section>
         </div>
