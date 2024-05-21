@@ -2,9 +2,13 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import "./components/Header/Header.css";
 import Home from "./components/Home/Home";
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 import "./components/Home/Home.css";
 import React, { useState } from "react";
 import SearchContext from "./context/search";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -25,14 +29,23 @@ function App() {
   };
 
   return (
-    <SearchContext.Provider
-      value={{ search, animeData, setData, singleData, setSingle }}
-    >
-      <div className="App">
-        <Header />
-        <Home />
-      </div>
-    </SearchContext.Provider>
+    <Router>
+      <SearchContext.Provider
+        value={{ search, animeData, setData, singleData, setSingle }}
+      >
+        <div className="App">
+          <Header />
+          <section>
+            <Routes>
+              {/* <Route path="/header" element={<Header />} /> */}
+              <Route path="/home" element={<Home />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </section>
+        </div>
+      </SearchContext.Provider>
+    </Router>
   );
 }
 

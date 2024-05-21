@@ -3,9 +3,9 @@ const Header = () => {
     <nav>
       <ul>
         <li className="navigation">
-          <a href="">Home</a>
-          <a href="">Register</a>
-          <a href="">Login</a>
+          <a href="/home">Home</a>
+          <a href="/register">Register</a>
+          <a href="/login">Login</a>
         </li>
       </ul>
     </nav>
