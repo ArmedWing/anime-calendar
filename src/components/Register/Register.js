@@ -2,20 +2,16 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
-import { signInWithPopup } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
+
 
 const Register = () => {
-  const provider = new GoogleAuthProvider();
+  
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signInWithGoogle = async () => {
-    const result = await signInWithPopup(auth, provider);
-    navigate("/home");
-  };
+  
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -75,8 +71,7 @@ const Register = () => {
             <p>
               Already have an account? <NavLink to="/login">Login</NavLink>
             </p>
-            <h2>Or login using Google</h2>
-            <button onClick={signInWithGoogle}> Sign In With Google</button>
+            
           </div>
         </div>
       </section>
