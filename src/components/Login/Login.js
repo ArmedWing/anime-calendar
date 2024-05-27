@@ -14,7 +14,7 @@ const Login = () => {
   const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     navigate("/home");
-    console.log("Successfully loged in");
+    console.log("Logged in successfully");
   };
 
   const onLogin = (e) => {
@@ -25,6 +25,7 @@ const Login = () => {
         const user = userCredential.user;
         navigate("/home");
         console.log("Logged in successfully");
+        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
