@@ -14,11 +14,13 @@ const Header = () => {
     <div className="navbar">
       <div className="links">
         <Link to="/home"> Home </Link>
-        {!user && (
+        {!user ? (
           <div>
             <Link to="/register"> Register </Link>
             <Link to="/login"> Login </Link>
           </div>
+        ) : (
+          <Link to="/profile"> Profile </Link>
         )}
       </div>
 
