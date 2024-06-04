@@ -1,9 +1,10 @@
-.profile-anime-card {
+.card {
   margin-top: 50px;
   margin-left: 20px;
-  margin-right: 20px;
+  margin-right: auto;
   flex: 1 0 21%;
   height: auto;
+  max-width: 25%;
   background: lightblue;
   overflow: hidden;
   text-decoration: none;

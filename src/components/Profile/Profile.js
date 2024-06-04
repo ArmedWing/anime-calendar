@@ -38,7 +38,7 @@ const Profile = () => {
 
       <div className="anime-card">
         {animes.map((anime) => (
-          <div key={anime.id} className="profile-anime-card">
+          <div key={anime.id} className="card">
             <h2>{anime.anime[0].title}</h2>
             <img src={anime.anime[0].images.jpg.image_url} />
             <p>Aired: {anime.anime[0].aired.from.split("-")[0]}</p>
