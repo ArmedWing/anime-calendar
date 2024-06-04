@@ -1,11 +1,43 @@
 import React, { useContext, useState } from "react";
-
+import {
+  addDoc,
+  doc,
+  setDoc,
+  collection,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import SearchContext from "../../context/search";
+import { db } from "../../firebase";
+import { auth } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Home = () => {
+  const [user] = useAuthState(auth);
   const search = useContext(SearchContext);
   const [input, setInput] = useState("");
   const [searchedAnime, setSearchedAnime] = useState([]);
+
+  const addToCalendar = async (key) => {
+    const currentAnime = searchedAnime.filter((anime) => anime.mal_id === key);
+
+    try {
+      const usersRef = doc(db, "users", user.displayName);
+      const animeRef = collection(usersRef, "animes");
+      await addDoc(animeRef, {
+        username: user.displayName,
+        animeId: searchedAnime[0].mal_id,
+        animeName: searchedAnime[0].title,
+        anime: currentAnime,
+      });
+      console.log("Added");
+    } catch (e) {
+      console.log("error");
+    }
+
+    console.log(currentAnime[0]);
+    console.log(user.displayName);
+  };
 
   const handleSearch = (event) => {
     search.search(input).then((data) => {
@@ -30,8 +62,15 @@ const Home = () => {
             {" "}
             <a href={`${anime.url}`} className="anime-card">
               <div className="anime-title">{anime.title}</div>
-              <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
             </a>
+            <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
+            <button
+              className="addToCalendarBtn"
+              key={anime.mal_id}
+              onClick={() => addToCalendar(anime.mal_id)}
+            >
+              Add to list
+            </button>
           </div>
         ))}
       </div>

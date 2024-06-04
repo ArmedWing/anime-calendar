@@ -2,6 +2,13 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
+import styled from "styled-components";
+
+const Navigation = {
+  marginRight: "10px",
+  textDecoration: "none",
+  fontSize: "22px",
+};
 
 const Header = () => {
   const [user] = useAuthState(auth);
@@ -13,14 +20,26 @@ const Header = () => {
   return (
     <div className="navbar">
       <div className="links">
-        <Link to="/home"> Home </Link>
+        <Link to="/home" style={Navigation}>
+          {" "}
+          Home{" "}
+        </Link>
         {!user ? (
           <div>
-            <Link to="/register"> Register </Link>
-            <Link to="/login"> Login </Link>
+            <Link to="/register" style={Navigation}>
+              {" "}
+              Register{" "}
+            </Link>
+            <Link to="/login" style={Navigation}>
+              {" "}
+              Login{" "}
+            </Link>
           </div>
         ) : (
-          <Link to="/profile"> Profile </Link>
+          <Link to="/profile" style={Navigation}>
+            {" "}
+            Profile{" "}
+          </Link>
         )}
       </div>
 
