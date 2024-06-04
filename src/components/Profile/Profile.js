@@ -34,11 +34,11 @@ const Profile = () => {
 
   return (
     <div>
-      {/* <h1>{user}</h1> */}
       <h1>My Added Animes</h1>
-      <ul>
+
+      <div className="anime-card">
         {animes.map((anime) => (
-          <li key={anime.id}>
+          <div key={anime.id} className="profile-anime-card">
             <h2>{anime.anime[0].title}</h2>
             <img src={anime.anime[0].images.jpg.image_url} />
             <p>Aired: {anime.anime[0].aired.from.split("-")[0]}</p>
@@ -49,10 +49,9 @@ const Profile = () => {
             <p>Status: {anime.anime[0].status}</p>
             <p>Genre: {anime.anime[0].genres[0].name}</p>
             <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-            
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

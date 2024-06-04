@@ -1,0 +1,18 @@
+.profile-anime-card {
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  flex: 1 0 21%;
+  height: auto;
+  background: lightblue;
+  overflow: hidden;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+
+.anime-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
