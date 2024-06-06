@@ -11,6 +11,7 @@ import SearchContext from "./context/search";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
+import AnimeDetails from "./components/AnimeDetails/AnimeDetails";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -43,6 +44,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/anime/:animeId" element={<AnimeDetails />} />
             </Routes>
           </section>
         </div>

@@ -1,19 +1,46 @@
 .card {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: auto;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
   flex: 1 0 21%;
-  height: auto;
+  height: 550px;
   max-width: 25%;
-  background: lightblue;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
   overflow: hidden;
   text-decoration: none;
   border-radius: 8px;
   border: 2px solid black;
 }
 
+.card a {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 5px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.cardText {
+  flex: 1;
+  margin-right: 20px;
+  padding-left: 30px;
+}
+
 .anime-card {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.detailsBtn {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 5px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  margin-left: 20px;
 }

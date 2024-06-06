@@ -42,7 +42,6 @@ const Home = () => {
   const handleSearch = (event) => {
     search.search(input).then((data) => {
       setSearchedAnime(data.data);
-      // console.log(data.data);
     });
   };
 
