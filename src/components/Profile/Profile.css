@@ -34,7 +34,12 @@
   flex-wrap: wrap;
 }
 
-.detailsBtn {
+.heading {
+  color: white;
+  font-size: 30px;
+}
+
+/* .Btn {
   border: 2px solid;
   border-radius: 6px;
   padding: 5px;
@@ -43,4 +48,4 @@
   font-size: 20px;
   text-decoration: none;
   margin-left: 20px;
-}
+} */

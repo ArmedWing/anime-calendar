@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
-import styled from "styled-components";
 
 const Navigation = {
   marginRight: "10px",
   textDecoration: "none",
-  fontSize: "22px",
+  fontSize: "30px",
+  fontWeight: "bold",
+  color: "white",
 };
 
 const Header = () => {

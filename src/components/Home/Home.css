@@ -5,13 +5,13 @@
 
 .anime {
   margin-top: 50px;
-  margin-left: 20px;
-  /* margin-right: 20px; */
+  margin-left: 10px;
+  margin-right: 10px;
   flex-basis: 15%;
   flex-grow: 1;
-  height: 410px;
+  height: 430px;
   width: 150px;
-  background: lightblue;
+  background: linear-gradient(85deg, #61c7ef, #4833fb);
   overflow: hidden;
   text-decoration: none;
   border-radius: 8px;
@@ -30,4 +30,8 @@
   font-size: 16px;
   color: #343434;
   font-weight: 700;
+}
+
+.home-page {
+  /* background-image: linear-gradient(85deg, #61c7ef, #4833fb); */
 }

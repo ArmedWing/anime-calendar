@@ -12,6 +12,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
 import AnimeDetails from "./components/AnimeDetails/AnimeDetails";
+import "./components/AnimeDetails/AnimeDetails.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);

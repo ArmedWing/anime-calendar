@@ -5,6 +5,17 @@ import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const Details = {
+  border: "2px solid",
+  borderRadius: "6px",
+  padding: "5px",
+  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
+  color: "white",
+  fontSize: "20px",
+  textDecoration: "none",
+  marginLeft: "20px",
+};
+
 const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
@@ -23,6 +34,7 @@ const Profile = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
         setAnimes(animesList);
       } catch (e) {
         console.error("Error fetching documents: ", e.message);
@@ -34,7 +46,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>My Added Animes</h1>
+      <h1 className="heading">My Animes</h1>
 
       <div className="anime-card">
         {animes.map((anime) => (
@@ -50,8 +62,8 @@ const Profile = () => {
                 <p>{anime.anime[0].status}</p>
               </div>
               <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-              <Link to={`/anime/${anime.id}`}>
-                <button className="detailsBtn">View Details</button>
+              <Link to={`/anime/${anime.id}`} style={Details}>
+                View Details
               </Link>
             </div>
           </div>

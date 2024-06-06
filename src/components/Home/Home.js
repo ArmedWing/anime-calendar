@@ -11,6 +11,8 @@ import SearchContext from "../../context/search";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Link } from "react-router-dom";
+
 
 const Home = () => {
   const [user] = useAuthState(auth);
@@ -34,9 +36,6 @@ const Home = () => {
     } catch (e) {
       console.log("error");
     }
-
-    console.log(currentAnime[0]);
-    console.log(user.displayName);
   };
 
   const handleSearch = (event) => {
@@ -46,7 +45,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="home-page">
       <h1>Home Page</h1>
       <input
         placeholder="search anime"
@@ -70,6 +69,9 @@ const Home = () => {
             >
               Add to list
             </button>
+            {/* <Link to={`/anime/${anime.mal_id}`}>
+              <button className="detailsBtn">View Details</button>
+            </Link> */}
           </div>
         ))}
       </div>
