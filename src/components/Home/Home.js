@@ -13,7 +13,6 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 
-
 const Home = () => {
   const [user] = useAuthState(auth);
   const search = useContext(SearchContext);
@@ -46,7 +45,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <h1>Home Page</h1>
+      <h1>Search</h1>
       <input
         placeholder="search anime"
         value={input}
