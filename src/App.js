@@ -13,6 +13,7 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
 import AnimeDetails from "./components/AnimeDetails/AnimeDetails";
 import "./components/AnimeDetails/AnimeDetails.css";
+import { SearchResultsProvider } from "./components/SearchResultContext";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -33,24 +34,26 @@ function App() {
   };
 
   return (
-    <Router>
-      <SearchContext.Provider
-        value={{ search, animeData, setData, singleData, setSingle }}
-      >
-        <div className="App">
-          <Header />
-          <section>
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/anime/:animeId" element={<AnimeDetails />} />
-            </Routes>
-          </section>
-        </div>
-      </SearchContext.Provider>
-    </Router>
+    <SearchResultsProvider>
+      <Router>
+        <SearchContext.Provider
+          value={{ search, animeData, setData, singleData, setSingle }}
+        >
+          <div className="App">
+            <Header />
+            <section>
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/anime/:mal_id" element={<AnimeDetails />} />
+              </Routes>
+            </section>
+          </div>
+        </SearchContext.Provider>
+      </Router>
+    </SearchResultsProvider>
   );
 }
 

@@ -42,7 +42,7 @@ const Profile = () => {
     };
 
     fetchAnimes();
-  }, []);
+  }, [user]);
 
   return (
     <div>
@@ -62,7 +62,7 @@ const Profile = () => {
                 <p>{anime.anime[0].status}</p>
               </div>
               <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-              <Link to={`/anime/${anime.id}`} style={Details}>
+              <Link to={`/anime/${anime.animeId}`} style={Details}>
                 View Details
               </Link>
             </div>

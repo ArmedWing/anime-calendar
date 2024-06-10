@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   addDoc,
   doc,
@@ -12,34 +12,47 @@ import { db } from "../../firebase";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
+import { SearchResultsContext } from "../SearchResultContext";
+
+const Details = {
+  border: "2px solid",
+  borderRadius: "6px",
+  padding: "3px",
+  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
+  color: "white",
+  fontSize: "20px",
+  textDecoration: "none",
+  marginLeft: "20px",
+};
 
 const Home = () => {
   const [user] = useAuthState(auth);
-  const search = useContext(SearchContext);
+  const { search } = useContext(SearchContext);
   const [input, setInput] = useState("");
-  const [searchedAnime, setSearchedAnime] = useState([]);
+  const { searchResults, setSearchResults } = useContext(SearchResultsContext);
 
   const addToCalendar = async (key) => {
-    const currentAnime = searchedAnime.filter((anime) => anime.mal_id === key);
+    const currentAnime = searchResults.filter((anime) => anime.mal_id === key);
 
     try {
       const usersRef = doc(db, "users", user.displayName);
       const animeRef = collection(usersRef, "animes");
       await addDoc(animeRef, {
         username: user.displayName,
-        animeId: searchedAnime[0].mal_id,
-        animeName: searchedAnime[0].title,
+        animeId: currentAnime[0].mal_id,
+        animeName: currentAnime[0].title,
         anime: currentAnime,
       });
       console.log("Added");
     } catch (e) {
-      console.log("error");
+      console.log("Error", e.message);
     }
   };
 
   const handleSearch = (event) => {
-    search.search(input).then((data) => {
-      setSearchedAnime(data.data);
+    event.preventDefault();
+    search(input).then((data) => {
+      setSearchResults(data.data);
     });
   };
 
@@ -54,7 +67,7 @@ const Home = () => {
       <button onClick={handleSearch}>Search</button>
 
       <div className="anime-list">
-        {searchedAnime.map((anime) => (
+        {searchResults.map((anime) => (
           <div key={anime.mal_id} className="anime">
             {" "}
             <a href={`${anime.url}`} className="anime-card">
@@ -68,9 +81,9 @@ const Home = () => {
             >
               Add to list
             </button>
-            {/* <Link to={`/anime/${anime.mal_id}`}>
-              <button className="detailsBtn">View Details</button>
-            </Link> */}
+            <Link to={`/anime/${anime.mal_id}`} style={Details}>
+              View Details
+            </Link>
           </div>
         ))}
       </div>
