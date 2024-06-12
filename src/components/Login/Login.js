@@ -37,12 +37,11 @@ const Login = () => {
   return (
     <>
       <main>
-        <section>
-          <div>
+        <section className="loginPage">
+          <div className="loginContainer">
             <p> Login </p>
-
-            <form>
-              <div>
+            <form className="inputbox">
+              <div className="credentials">
                 <label htmlFor="email-address">Email address</label>
                 <input
                   id="email-address"
@@ -54,7 +53,7 @@ const Login = () => {
                 />
               </div>
 
-              <div>
+              <div className="credentials">
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
@@ -65,17 +64,24 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-
-              <div>
-                <button onClick={onLogin}>Login</button>
-              </div>
+              <button onClick={onLogin} className="loginBtn">
+                Log in
+              </button>
             </form>
 
-            <p className="text-sm text-white text-center">
-              No account yet? <NavLink to="/signup">Register</NavLink>
-            </p>
-            <h2>Or login using Google</h2>
-            <button onClick={signInWithGoogle}> Sign In With Google</button>
+            <div className="otherOptions">
+              <h2 className="googleLogin">Or login with</h2>
+              <div className="imgContainer">
+                <img
+                  src={require("../../images/google-logo.png")}
+                  alt="Google"
+                  onClick={signInWithGoogle}
+                ></img>
+              </div>
+              <NavLink to="/signup" className="register">
+                Register
+              </NavLink>
+            </div>
           </div>
         </section>
       </main>

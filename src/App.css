@@ -1,4 +1,5 @@
 .App {
   text-align: center;
   background-image: linear-gradient(85deg, #4c128f, #23365c);
+  min-height: 100vh;
 }

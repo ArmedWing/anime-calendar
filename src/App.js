@@ -17,6 +17,7 @@ import { SearchResultsProvider } from "./components/SearchResultContext";
 import Home from "./components/Home/Home";
 import "./components/Home/Home.css";
 import { HomePageProvider } from "./components/HomePageContext";
+import "./components/Login/Login.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -49,7 +50,7 @@ function App() {
                 <Routes>
                   <Route path="/home" element={<Home />} />
                   <Route path="/search" element={<Search />} />
-                  <Route path="/register" element={<Register />} />
+                  <Route path="/signup" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/anime/:mal_id" element={<AnimeDetails />} />

@@ -19,3 +19,8 @@
 .details-container img {
   border-radius: 15px;
 }
+
+.noAnimes {
+  color: white;
+  font-size: 20px;
+}

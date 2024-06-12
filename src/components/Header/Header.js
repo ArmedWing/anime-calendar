@@ -30,7 +30,7 @@ const Header = () => {
         </Link>
         {!user ? (
           <div>
-            <Link to="/register" style={Navigation}>
+            <Link to="/signup" style={Navigation}>
               {" "}
               Register{" "}
             </Link>

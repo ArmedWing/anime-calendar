@@ -62,7 +62,7 @@ const AnimeDetails = () => {
   }, [mal_id, searchResults, homePageResults]);
 
   if (!anime) {
-    return <div>No Anime Details</div>;
+    return <div className="noAnimes">No Anime Details</div>;
   }
 
   return (
