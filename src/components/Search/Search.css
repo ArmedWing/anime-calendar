@@ -1,0 +1,48 @@
+.anime-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.anime {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex-basis: 15%;
+  flex-grow: 1;
+  height: 450px;
+  width: 150px;
+  background: linear-gradient(85deg, #61c7ef, #4833fb);
+  overflow: hidden;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+
+.anime-title {
+  text-decoration: none;
+  height: 70px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #343434;
+  font-weight: 700;
+}
+
+.home-page h1 {
+  color: white;
+  font-size: 34px;
+}
+
+.addToCalendarBtn {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 5px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}

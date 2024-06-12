@@ -2,10 +2,10 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import "./components/Header/Header.css";
 import "./components/Profile/Profile.css";
-import Home from "./components/Home/Home";
+import Search from "./components/Search/Search";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
-import "./components/Home/Home.css";
+import "./components/Search/Search.css";
 import React, { useState } from "react";
 import SearchContext from "./context/search";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -43,7 +43,7 @@ function App() {
             <Header />
             <section>
               <Routes>
-                <Route path="/home" element={<Home />} />
+                <Route path="/search" element={<Search />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />

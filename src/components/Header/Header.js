@@ -21,9 +21,9 @@ const Header = () => {
   return (
     <div className="navbar">
       <div className="links">
-        <Link to="/home" style={Navigation}>
+        <Link to="/search" style={Navigation}>
           {" "}
-          Home{" "}
+          Search{" "}
         </Link>
         {!user ? (
           <div>
