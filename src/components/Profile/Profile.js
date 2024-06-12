@@ -58,8 +58,8 @@ const Profile = () => {
             />
             <div className="cardText">
               <div className="groupText">
-                <h3>Status</h3>
-                <p>{anime.anime[0].status}</p>
+                <p>Status: {anime.anime[0].status}</p>
+                <p>Rating: {anime.anime[0].score}</p>
               </div>
               <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
               <Link to={`/anime/${anime.animeId}`} style={Details}>

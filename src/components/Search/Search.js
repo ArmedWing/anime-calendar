@@ -50,7 +50,7 @@ const Search = () => {
   };
 
   const handleSearch = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     search(input).then((data) => {
       setSearchResults(data.data);
     });
@@ -63,6 +63,11 @@ const Search = () => {
         placeholder="search anime"
         value={input}
         onChange={(event) => setInput(event.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
       />
       <button onClick={handleSearch}>Search</button>
 

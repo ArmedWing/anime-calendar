@@ -21,6 +21,9 @@ const Header = () => {
   return (
     <div className="navbar">
       <div className="links">
+        <Link to="/home" style={Navigation}>
+          Home
+        </Link>
         <Link to="/search" style={Navigation}>
           {" "}
           Search{" "}

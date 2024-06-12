@@ -12,12 +12,14 @@ import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { SearchResultsContext } from "../SearchResultContext";
+import { HomePageContext } from "../HomePageContext";
 
 const AnimeDetails = () => {
   const { mal_id } = useParams();
-  const { animeId } = useParams();
+  // const { animeId } = useParams();
   const { searchResults } = useContext(SearchResultsContext);
   const [anime, setAnime] = useState(null);
+  const { homePageResults } = useContext(HomePageContext);
 
   useEffect(() => {
     const fetchAnimeDetails = async () => {
@@ -33,7 +35,6 @@ const AnimeDetails = () => {
         );
         const querySnapshot = await getDocs(animeRef);
         const animeDetails = querySnapshot.docs;
-        console.log(animeDetails);
 
         if (animeDetails.length) {
           setAnime(animeDetails[0].data().anime[0]);
@@ -44,7 +45,12 @@ const AnimeDetails = () => {
           if (animeFromSearch) {
             setAnime(animeFromSearch);
           } else {
-            console.log("Anime not found!");
+            const animeHomePage = homePageResults.find(
+              (anime) => anime.mal_id === parseInt(mal_id)
+            );
+            if (animeHomePage) {
+              setAnime(animeHomePage);
+            }
           }
         }
       } catch (error) {
@@ -53,12 +59,12 @@ const AnimeDetails = () => {
     };
 
     fetchAnimeDetails();
-  }, [mal_id, searchResults]);
+  }, [mal_id, searchResults, homePageResults]);
 
   if (!anime) {
     return <div>No Anime Details</div>;
   }
-  console.log(anime);
+
   return (
     <div className="details-container">
       <div>
