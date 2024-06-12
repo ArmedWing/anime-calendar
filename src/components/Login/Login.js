@@ -36,55 +36,53 @@ const Login = () => {
 
   return (
     <>
-      <main>
-        <section className="loginPage">
-          <div className="loginContainer">
-            <p> Login </p>
-            <form className="inputbox">
-              <div className="credentials">
-                <label htmlFor="email-address">Email address</label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="Email address"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="credentials">
-                <label htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button onClick={onLogin} className="loginBtn">
-                Log in
-              </button>
-            </form>
-
-            <div className="otherOptions">
-              <h2 className="googleLogin">Or login with</h2>
-              <div className="imgContainer">
-                <img
-                  src={require("../../images/google-logo.png")}
-                  alt="Google"
-                  onClick={signInWithGoogle}
-                ></img>
-              </div>
-              <NavLink to="/signup" className="register">
-                Register
-              </NavLink>
+      <section className="loginPage">
+        <div className="loginContainer">
+          <p> Login </p>
+          <form className="inputbox">
+            <div className="credentials">
+              <label htmlFor="email-address"></label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                required
+                placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
+
+            <div className="credentials">
+              <label htmlFor="password"></label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button onClick={onLogin} className="loginBtn">
+              Log in
+            </button>
+          </form>
+
+          <div className="otherOptions">
+            <h2 className="googleLogin">Or login with</h2>
+            <div className="imgContainer">
+              <img
+                src={require("../../images/google-logo.png")}
+                alt="Google"
+                onClick={signInWithGoogle}
+              ></img>
+            </div>
+            <NavLink to="/signup" className="register">
+              Register
+            </NavLink>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
     </>
   );
 };
