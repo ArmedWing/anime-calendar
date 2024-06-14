@@ -18,6 +18,7 @@ import Home from "./components/Home/Home";
 import "./components/Home/Home.css";
 import { HomePageProvider } from "./components/HomePageContext";
 import "./components/Login/Login.css";
+import "./components/Register/Register.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);

@@ -16,7 +16,6 @@
   text-align: center;
   width: 100%;
   padding: 30px 0;
-  gap: 40px;
 }
 
 .loginPage label {
@@ -25,7 +24,7 @@
   padding-bottom: 20px;
 }
 
-.loginPage p {
+.loginPage h1 {
   color: white;
   font-size: 36px;
 }
@@ -47,7 +46,6 @@
   height: 40px;
   outline: none;
   font-size: 1rem;
-  /* padding: 0 35px 0 5px; */
 }
 
 .otherOptions {
@@ -60,7 +58,9 @@
   text-decoration: none;
   font-size: 26px;
   color: white;
-  /* margin-left: 20px; */
+  border: 1px solid white;
+  border-radius: 7px;
+  padding: 10px 40px;
 }
 
 .register:hover {
@@ -70,7 +70,6 @@
 .googleLogin {
   color: white;
   font-size: 18px;
-  /* margin-left: 15px; */
 }
 
 .otherOptions img {
@@ -78,7 +77,6 @@
   border-radius: 50%;
   margin-bottom: 50px;
   margin-top: 10px;
-  /* margin-left: 10px; */
 }
 
 .otherOptions img:hover {
@@ -95,7 +93,6 @@
   text-decoration: none;
   width: 100px;
   align-self: center;
-  /* margin-left: 10px; */
 }
 
 .loginBtn:hover {
