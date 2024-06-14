@@ -67,39 +67,37 @@ const AnimeDetails = () => {
 
   return (
     <div className="details-container">
-      <div>
-        <h1>{anime.animeName}</h1>
+      <div className="leftSection">
+        <h1>{anime.title}</h1>
         <img src={anime.images.jpg.large_image_url} className="animeImg" />
         <a href={anime.trailer.embed_url}>Watch Trailer</a>
         <a href={anime.url}>My Anime List</a>
       </div>
-      <div>
-        <h3>Story</h3>
-        <p>{anime.synopsis}</p>
-        <p>{anime.status}</p>
+      <div className="rightSection">
+        <h2>Story:</h2>
+        <p>
+          {anime.synopsis && anime.synopsis.length > 10
+            ? anime.synopsis.slice(0, -25)
+            : anime.synopsis}
+        </p>
+        <p>Status: {anime.status}</p>
         <div className="groupText">
-          <h3>Aired</h3>
-          <p>{anime.aired.from.split("-")[0]}</p>
+          <p>Aired: {anime.aired.from.split("-")[0]}</p>
         </div>
         <div className="groupText">
-          <h3>Ended</h3>
-          <p>{anime.aired.to?.split("-")[0]}</p>
+          <p>Ended: {anime.aired.to?.split("-")[0]}</p>
         </div>
         <div className="groupText">
-          <h3>Broadcast</h3>
-          <p>{anime.broadcast?.string}</p>
+          <p>Broadcast: {anime.broadcast?.string}</p>
         </div>
         <div className="groupText">
-          <h3>Studio name</h3>
-          <p>{anime.studios[0].name}</p>
+          <p>Studio name: {anime.studios[0].name}</p>
         </div>
         <div className="groupText">
-          <h3>Score</h3>
-          <p>{anime.score}</p>
+          <p>Score: {anime.score}</p>
         </div>
         <div className="groupText">
-          <h3>Genre</h3>
-          <p>{anime.genres[0].name}</p>
+          <p>Genre: {anime.genres[0].name}</p>
           {/* <div>
               {animeDetails.genres && animeDetails.genres.length > 0 ? (
                 animeDetails.genres.map((genre) => <p>{genre.name}</p>)
