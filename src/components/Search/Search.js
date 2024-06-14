@@ -14,17 +14,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import { SearchResultsContext } from "../SearchResultContext";
 
-const Details = {
-  border: "2px solid",
-  borderRadius: "6px",
-  padding: "3px",
-  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
-  color: "white",
-  fontSize: "20px",
-  textDecoration: "none",
-  marginLeft: "20px",
-};
-
 const Search = () => {
   const [user] = useAuthState(auth);
   const { search } = useContext(SearchContext);
@@ -57,19 +46,24 @@ const Search = () => {
   };
 
   return (
-    <div className="home-page">
+    <div className="homePage">
       <h1>Search</h1>
-      <input
-        placeholder="search anime"
-        value={input}
-        onChange={(event) => setInput(event.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearch();
-          }
-        }}
-      />
-      <button onClick={handleSearch}>Search</button>
+      <div className="searchContainer">
+        <div>
+          <input
+            placeholder="search anime"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            className="searchInput"
+          />
+        </div>
+        <button onClick={handleSearch}>Search</button>
+      </div>
 
       <div className="anime-list">
         {searchResults.map((anime) => (
@@ -86,7 +80,7 @@ const Search = () => {
             >
               Add to list
             </button>
-            <Link to={`/anime/${anime.mal_id}`} style={Details}>
+            <Link to={`/anime/${anime.mal_id}`} className="view-details">
               View Details
             </Link>
           </div>

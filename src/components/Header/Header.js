@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
@@ -13,9 +13,11 @@ const Navigation = {
 
 const Header = () => {
   const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const signUserOut = async () => {
     await signOut(auth);
+    navigate("/home");
   };
 
   return (
@@ -50,7 +52,11 @@ const Header = () => {
       {user && (
         <div className="user">
           <p> {user?.displayName} </p>
-          <img src={user?.photoURL || ""} width="50" height="50" />
+          <img
+            src={user?.photoURL || "/src/images/defaultImg.jpg"}
+            alt="Profile"
+            className="profileImg"
+          />
           <button onClick={signUserOut}> Log Out </button>
         </div>
       )}
