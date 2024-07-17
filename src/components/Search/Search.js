@@ -31,6 +31,7 @@ const Search = () => {
         animeId: currentAnime[0].mal_id,
         animeName: currentAnime[0].title,
         anime: currentAnime,
+        episodesWatched: 0,
       });
       alert("Anime added to list");
     } catch (e) {

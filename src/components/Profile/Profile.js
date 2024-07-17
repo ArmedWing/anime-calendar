@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { collection, getDocs, doc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +19,26 @@ const Details = {
 const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
+
+  const addEpisode = async (anime) => {
+    try {
+      const newEpisodesWatched = anime.episodesWatched + 1;
+      const userRef = doc(db, "users", user.displayName);
+      const animeRef = doc(userRef, "animes", anime.id);
+
+      // Update the episodesWatched field
+      await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
+      setAnimes(
+        animes.map((a) =>
+          a.id === anime.id ? { ...a, episodesWatched: newEpisodesWatched } : a
+        )
+      );
+
+      console.log(`Episodes watched updated to ${newEpisodesWatched}`);
+    } catch (error) {
+      console.error("Error updating episodes watched:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchAnimes = async () => {
@@ -60,6 +80,17 @@ const Profile = () => {
               <div className="groupText">
                 <p>Status: {anime.anime[0].status}</p>
                 <p>Rating: {anime.anime[0].score}</p>
+
+                <p>
+                  Episodes watched: {anime.episodesWatched}/
+                  {anime.anime[0].episodes}
+                  <button
+                    onClick={() => addEpisode(anime)}
+                    className="addEpisodeButton"
+                  >
+                    +
+                  </button>
+                </p>
               </div>
               <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
               <Link to={`/anime/${anime.animeId}`} style={Details}>
