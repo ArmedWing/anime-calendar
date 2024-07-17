@@ -1,9 +1,9 @@
 .card {
   margin-top: 20px;
-  margin-left: 10px;
+  margin-left: 15px;
   margin-right: 10px;
   flex: 1 0 21%;
-  height: 630px;
+  height: 600px;
   /* max-height: auto; */
   max-width: 430px;
   background-image: linear-gradient(85deg, #61c7ef, #4833fb);
@@ -19,7 +19,7 @@
   padding: 5px;
   background-image: linear-gradient(85deg, #61c7ef, #4833fb);
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: none;
 }
 
@@ -53,6 +53,25 @@
 
 .addEpisodeButton:hover {
   background-color: #4833fb;
+}
+
+.addCompletedBtn {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 6px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 5px;
 }
 
 /* .Btn {

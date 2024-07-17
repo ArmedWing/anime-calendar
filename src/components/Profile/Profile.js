@@ -1,6 +1,13 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -11,9 +18,8 @@ const Details = {
   padding: "5px",
   backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
   color: "white",
-  fontSize: "20px",
+  fontSize: "18px",
   textDecoration: "none",
-  marginLeft: "20px",
 };
 
 const Profile = () => {
@@ -26,17 +32,35 @@ const Profile = () => {
       const userRef = doc(db, "users", user.displayName);
       const animeRef = doc(userRef, "animes", anime.id);
 
-      // Update the episodesWatched field
       await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
       setAnimes(
         animes.map((a) =>
           a.id === anime.id ? { ...a, episodesWatched: newEpisodesWatched } : a
         )
       );
-
-      console.log(`Episodes watched updated to ${newEpisodesWatched}`);
     } catch (error) {
       console.error("Error updating episodes watched:", error);
+    }
+  };
+
+  const addCompleted = async (key) => {
+    const currentAnime = animes.find((anime) => anime.id === key);
+    try {
+      const usersRef = doc(db, "users", user.displayName);
+      const animeRef = collection(usersRef, "completed");
+      await addDoc(animeRef, {
+        ...currentAnime,
+
+        episodesWatched: currentAnime.episodesWatched,
+      });
+
+      await deleteDoc(doc(usersRef, "animes", `${currentAnime.id}`));
+
+      console.log(currentAnime.id);
+      alert("Anime completed");
+    } catch (e) {
+      console.log("Error", e.message);
+      console.log(currentAnime.id);
     }
   };
 
@@ -62,11 +86,11 @@ const Profile = () => {
     };
 
     fetchAnimes();
-  }, [user]);
+  }, [user, animes]);
 
   return (
     <div>
-      <h1 className="heading">My Animes</h1>
+      <h1 className="heading">My List</h1>
 
       <div className="anime-card">
         {animes.map((anime) => (
@@ -92,10 +116,19 @@ const Profile = () => {
                   </button>
                 </p>
               </div>
-              <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-              <Link to={`/anime/${anime.animeId}`} style={Details}>
-                View Details
-              </Link>
+              <div className="actionsContainer">
+                <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
+                <Link to={`/anime/${anime.animeId}`} style={Details}>
+                  View Details
+                </Link>
+                <button
+                  key={anime.id}
+                  onClick={() => addCompleted(anime.id)}
+                  className="addCompletedBtn"
+                >
+                  Add Completed
+                </button>
+              </div>
             </div>
           </div>
         ))}

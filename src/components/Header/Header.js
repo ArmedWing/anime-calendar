@@ -42,10 +42,16 @@ const Header = () => {
             </Link>
           </div>
         ) : (
-          <Link to="/profile" style={Navigation}>
-            {" "}
-            Profile{" "}
-          </Link>
+          <div>
+            <Link to="/profile" style={Navigation}>
+              {" "}
+              Profile{" "}
+            </Link>
+            <Link to="/completed" style={Navigation}>
+              {" "}
+              Completed{" "}
+            </Link>
+          </div>
         )}
       </div>
 

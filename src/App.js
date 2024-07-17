@@ -19,6 +19,7 @@ import "./components/Home/Home.css";
 import { HomePageProvider } from "./components/HomePageContext";
 import "./components/Login/Login.css";
 import "./components/Register/Register.css";
+import Completed from "./components/FinishedWatching/Completed";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/signup" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/completed" element={<Completed />} />
                   <Route path="/anime/:mal_id" element={<AnimeDetails />} />
                 </Routes>
               </section>
