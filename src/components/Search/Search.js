@@ -74,16 +74,20 @@ const Search = () => {
               <div className="anime-title">{anime.title}</div>
             </a>
             <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
-            <button
-              className="addToCalendarBtn"
-              key={anime.mal_id}
-              onClick={() => addToCalendar(anime.mal_id)}
-            >
-              Add to list
-            </button>
-            <Link to={`/anime/${anime.mal_id}`} className="view-details">
-              View Details
-            </Link>
+            <p>Status: {anime.status}</p>
+            <p>Rating: {anime.score}</p>
+            <div className="actionsContainer">
+              <button
+                className="addToCalendarBtn"
+                key={anime.mal_id}
+                onClick={() => addToCalendar(anime.mal_id)}
+              >
+                Add to list
+              </button>
+              <Link to={`/anime/${anime.mal_id}`} className="view-details">
+                View Details
+              </Link>
+            </div>
           </div>
         ))}
       </div>

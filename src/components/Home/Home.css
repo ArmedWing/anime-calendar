@@ -6,3 +6,43 @@
 .anime-card h2 {
   color: white;
 }
+
+.pagination button {
+  background-color: #61c7ef;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 7px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.pagination span {
+  color: white;
+  padding: 8px;
+}
+
+.filter {
+  background-color: #61c7ef;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 7px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.actionsHomeContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.genres {
+  background-color: #61c7ef;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 7px;
+  cursor: pointer;
+  margin-left: 6px;
+}

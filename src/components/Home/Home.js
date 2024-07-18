@@ -1,5 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { addDoc, doc, collection } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
+import { SearchResultsContext } from "../SearchResultContext";
 
 const Details = {
   border: "2px solid",
@@ -13,12 +18,13 @@ const Details = {
 };
 
 const Home = () => {
+  const [user] = useAuthState(auth);
+  const { searchResults, setSearchResults } = useContext(SearchResultsContext);
   const [filterByGenre, setFilterByGenre] = useState([]);
   const [animes, setAnimes] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [showTopAnimes, setShowTopAnimes] = useState(false);
   const animesPerPage = 12;
 
   const getTopAnime = async (page = 1) => {
@@ -28,7 +34,7 @@ const Home = () => {
       );
       const data = await response.json();
 
-      setAnimes(data.data); //
+      setAnimes(data.data);
       setCurrentPage(data.pagination.current_page || 1);
       setTotalPages(data.pagination.last_visible_page || 1);
       setSelectedGenre(null);
@@ -47,7 +53,6 @@ const Home = () => {
       setAnimes(data.data);
       setCurrentPage(data.pagination.current_page || 1);
       setTotalPages(data.pagination.last_visible_page || 1);
-      setShowTopAnimes(false);
     } catch (error) {
       console.error("Failed to fetch animes by genre:", error);
       setAnimes([]);
@@ -68,7 +73,7 @@ const Home = () => {
 
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
-    // getAnimesByGenre(genre.mal_id);
+    getAnimesByGenre(genre.mal_id);
     setCurrentPage(1);
   };
 
@@ -82,6 +87,22 @@ const Home = () => {
       setFilterByGenre([]);
     }
   };
+  const addToCalendar = async (anime) => {
+    try {
+      const usersRef = doc(db, "users", user.displayName);
+      const animeRef = collection(usersRef, "animes");
+      await addDoc(animeRef, {
+        username: user.displayName,
+        animeId: anime.mal_id,
+        animeName: anime.title,
+        anime: anime,
+        episodesWatched: 0,
+      });
+      alert("Anime added to list");
+    } catch (e) {
+      console.log("Error", e.message);
+    }
+  };
 
   useEffect(() => {
     if (selectedGenre) {
@@ -89,7 +110,7 @@ const Home = () => {
     } else {
       getTopAnime(currentPage);
     }
-  }, [currentPage, selectedGenre, showTopAnimes]);
+  }, [currentPage, selectedGenre]);
 
   const allowedGenres = [1, 2, 4, 8, 10, 14, 7, 22, 24, 30, 37, 62, 18, 27];
   const filteredGenres = filterByGenre.filter((genre) =>
@@ -98,8 +119,12 @@ const Home = () => {
 
   return (
     <div className="Animes">
-      <button onClick={() => getTopAnime(currentPage)}>Filter by Rating</button>
-      <button onClick={getAnimeGenre}>Filter by Genres</button>
+      <button onClick={() => getTopAnime(currentPage)} className="filter">
+        Filter by Rating
+      </button>
+      <button onClick={getAnimeGenre} className="filter">
+        Filter by Genres
+      </button>
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
@@ -114,7 +139,11 @@ const Home = () => {
 
       <div>
         {filteredGenres.map((genre) => (
-          <button key={genre.mal_id} onClick={() => handleGenreClick(genre)}>
+          <button
+            key={genre.mal_id}
+            onClick={() => handleGenreClick(genre)}
+            className="genres"
+          >
             {genre.name}
           </button>
         ))}
@@ -137,13 +166,23 @@ const Home = () => {
                     <p>Status: {anime.status}</p>
                     <p>Rating: {anime.score}</p>
                   </div>
-                  <a href={anime.trailer.embed_url}>Watch Trailer</a>
-                  <Link
-                    to={`/anime/${anime.mal_id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    View Details
-                  </Link>
+                  <div className="actionsHomeContainer">
+                    <a href={anime.trailer.embed_url}>Watch Trailer</a>
+                    <button
+                      className="addToCalendarBtn"
+                      key={anime.mal_id}
+                      onClick={() => addToCalendar(anime)}
+                    >
+                      Add to list
+                    </button>
+                    <Link
+                      to={`/anime/${anime.mal_id}`}
+                      state={{ anime }}
+                      style={{ textDecoration: "none" }}
+                    >
+                      View Details
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))

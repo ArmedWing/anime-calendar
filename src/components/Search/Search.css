@@ -1,15 +1,21 @@
 .anime-list {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
-  padding: 20px;
+  /* justify-content: center; */
+  /* padding: 20px; */
 }
 
 .anime {
-  flex-basis: 15%;
-  flex-grow: 1;
-  width: 200px;
+  flex: 1 0 21%;
+  height: 600px;
+  margin-top: 20px;
+  margin-left: 15px;
+  margin-right: 10px;
+  /* flex-basis: 15%;
+  flex-grow: 1; */
+  max-width: 420px;
   background: linear-gradient(85deg, #61c7ef, #4833fb);
   border-radius: 8px;
   border: 2px solid black;
@@ -72,7 +78,7 @@
 .addToCalendarBtn,
 .view-details {
   display: block;
-  width: calc(100% - 80px);
+  width: 130px;
   margin: 10px auto;
   padding: 10px;
   border: 2px solid;
@@ -87,4 +93,12 @@
 
 /* .view-details {
   width: 63%;
+} */
+
+/* .actionsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 5px;
 } */
