@@ -1,6 +1,12 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +25,14 @@ const Details = {
 const Completed = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
+
+  const deleteAnime = async (key) => {
+    const usersRef = doc(db, "users", user.displayName);
+    const currentAnime = animes.find((anime) => anime.id === key);
+    await deleteDoc(doc(usersRef, "completed", `${currentAnime.id}`));
+
+    alert("Anime deleted");
+  };
 
   useEffect(() => {
     const fetchAnimes = async () => {
@@ -42,7 +56,7 @@ const Completed = () => {
     };
 
     fetchAnimes();
-  }, [user]);
+  }, [user, animes]);
 
   return (
     <div>
@@ -73,6 +87,13 @@ const Completed = () => {
                     <Link to={`/anime/${anime.animeId}`} style={Details}>
                       View Details
                     </Link>
+                    <button
+                      key={anime.id}
+                      onClick={() => deleteAnime(anime.id)}
+                      className="deleteBtn"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </>
               ) : (

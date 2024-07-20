@@ -12,15 +12,6 @@ import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Details = {
-  border: "2px solid",
-  borderRadius: "6px",
-  padding: "5px",
-  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
-  color: "white",
-  fontSize: "18px",
-  textDecoration: "none",
-};
 
 const Profile = () => {
   const [user] = useAuthState(auth);
@@ -45,12 +36,12 @@ const Profile = () => {
 
   const addCompleted = async (key) => {
     const currentAnime = animes.find((anime) => anime.id === key);
+    const { id, ...animeWithoutId } = currentAnime;
     try {
       const usersRef = doc(db, "users", user.displayName);
       const animeRef = collection(usersRef, "completed");
       await addDoc(animeRef, {
-        ...currentAnime,
-
+        ...animeWithoutId,
         episodesWatched: currentAnime.episodesWatched,
       });
 
@@ -60,6 +51,13 @@ const Profile = () => {
     } catch (e) {
       console.log("Error", e.message);
     }
+  };
+
+  const deleteAnime = async (key) => {
+    const usersRef = doc(db, "users", user.displayName);
+    const currentAnime = animes.find((anime) => anime.id === key);
+    await deleteDoc(doc(usersRef, "animes", `${currentAnime.id}`));
+    alert("Anime deleted");
   };
 
   useEffect(() => {
@@ -84,7 +82,7 @@ const Profile = () => {
     };
 
     fetchAnimes();
-  }, [user]);
+  }, [user, animes]);
 
   return (
     <div>
@@ -119,11 +117,15 @@ const Profile = () => {
                       </p>
                     </div>
                     <div className="actionsContainer">
-                      <a href={anime.anime[0].trailer.embed_url}>
+                      <a
+                        href={anime.anime[0].trailer.embed_url}
+                        className="actionBtn"
+                      >
                         Watch Trailer
                       </a>
                       <Link
                         to={`/anime/${anime.animeId}`}
+                        className="actionBtn"
                         style={{ textDecoration: "none" }}
                       >
                         View Details
@@ -131,9 +133,16 @@ const Profile = () => {
                       <button
                         key={anime.id}
                         onClick={() => addCompleted(anime.id)}
-                        className="addCompletedBtn"
+                        className="actionBtn"
                       >
                         Add Completed
+                      </button>
+                      <button
+                        key={anime.id}
+                        onClick={() => deleteAnime(anime.id)}
+                        className="actionBtn"
+                      >
+                        Delete
                       </button>
                     </div>
                   </div>

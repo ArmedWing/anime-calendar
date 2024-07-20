@@ -2,25 +2,17 @@
   margin-top: 20px;
   margin-left: 15px;
   margin-right: 10px;
+  padding-bottom: 20px;
   flex: 1 0 21%;
-  height: 600px;
-  /* max-height: auto; */
+  /* height: 650px; */
+  max-height: auto;
   max-width: 430px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(85deg, #61c7ef, #4833fb);
   overflow: hidden;
   text-decoration: none;
   border-radius: 8px;
   border: 2px solid black;
-}
-
-.card a {
-  border: 2px solid;
-  border-radius: 6px;
-  padding: 5px;
-  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
-  color: white;
-  font-size: 18px;
-  text-decoration: none;
 }
 
 .cardText {
@@ -40,6 +32,13 @@
   color: white;
   font-size: 30px;
 }
+.actionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 
 .addEpisodeButton {
   background-color: #61c7ef;
@@ -55,7 +54,13 @@
   background-color: #4833fb;
 }
 
-.addCompletedBtn {
+.no-animes {
+  color: white;
+  font-size: 30px;
+  margin: 0 auto;
+}
+
+.actionBtn {
   border: 2px solid;
   border-radius: 6px;
   padding: 6px;
@@ -66,27 +71,6 @@
   cursor: pointer;
 }
 
-.actionsContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  gap: 5px;
+.actionsContainer > .actionBtn:nth-child(3) {
+  margin-right: 20px;
 }
-
-.no-animes {
-  color: white;
-  font-size: 30px;
-  margin: 0 auto;
-}
-
-/* .Btn {
-  border: 2px solid;
-  border-radius: 6px;
-  padding: 5px;
-  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
-  color: white;
-  font-size: 20px;
-  text-decoration: none;
-  margin-left: 20px;
-} */
