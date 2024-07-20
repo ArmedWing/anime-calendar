@@ -49,30 +49,40 @@ const Completed = () => {
       <h1 className="heading">Completed</h1>
 
       <div className="anime-card">
-        {animes.map((anime) => (
-          <div key={anime.id} className="card">
-            <h2>{anime.anime[0].title}</h2>
-            <img
-              src={anime.anime[0].images.jpg.image_url}
-              className="animeImg"
-            />
-            <div className="cardText">
-              <div className="groupText">
-                <p>Status: {anime.anime[0].status}</p>
-                <p>Rating: {anime.anime[0].score}</p>
-
-                <p>
-                  Episodes watched:&nbsp;&nbsp;
-                  {anime.anime[0].episodes}
-                </p>
-              </div>
-              <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-              <Link to={`/anime/${anime.animeId}`} style={Details}>
-                View Details
-              </Link>
+        {animes && animes.length > 0 ? (
+          animes.map((anime) => (
+            <div key={anime.id} className="card">
+              {anime.anime && anime.anime[0] ? (
+                <>
+                  <h2>{anime.anime[0].title}</h2>
+                  <img
+                    src={anime.anime[0].images.jpg.image_url}
+                    className="animeImg"
+                    alt={anime.anime[0].title}
+                  />
+                  <div className="cardText">
+                    <div className="groupText">
+                      <p>Status: {anime.anime[0].status}</p>
+                      <p>Rating: {anime.anime[0].score}</p>
+                      <p>
+                        Episodes watched:&nbsp;&nbsp;
+                        {anime.anime[0].episodes}
+                      </p>
+                    </div>
+                    <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
+                    <Link to={`/anime/${anime.animeId}`} style={Details}>
+                      View Details
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <h1 className="heading">Anime data is missing</h1>
+              )}
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <h1 className="no-animes">You have no added animes</h1>
+        )}
       </div>
     </div>
   );

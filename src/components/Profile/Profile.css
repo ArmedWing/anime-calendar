@@ -74,6 +74,12 @@
   gap: 5px;
 }
 
+.no-animes {
+  color: white;
+  font-size: 30px;
+  margin: 0 auto;
+}
+
 /* .Btn {
   border: 2px solid;
   border-radius: 6px;

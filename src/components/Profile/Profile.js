@@ -79,7 +79,7 @@ const Profile = () => {
 
         setAnimes(animesList);
       } catch (e) {
-        alert("Error fetching documents: ", e.message);
+        console.error("Error fetching documents: ", e.message);
       }
     };
 
@@ -139,12 +139,12 @@ const Profile = () => {
                   </div>
                 </>
               ) : (
-                <p>Anime data is missing</p>
+                <h1 className="heading">Anime data is missing</h1>
               )}
             </div>
           ))
         ) : (
-          <div>You have no added animes</div>
+          <h1 className="no-animes">You have no added animes</h1>
         )}
       </div>
     </div>
