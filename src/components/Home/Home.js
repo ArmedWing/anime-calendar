@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { addDoc, doc, collection } from "firebase/firestore";
+import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
@@ -22,6 +22,7 @@ const Home = () => {
   const { searchResults, setSearchResults } = useContext(SearchResultsContext);
   const [filterByGenre, setFilterByGenre] = useState([]);
   const [animes, setAnimes] = useState([]);
+  const [currentAnimes, setCurrentAnimes] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -88,20 +89,34 @@ const Home = () => {
     }
   };
   const addToCalendar = async (anime) => {
-    try {
-      const usersRef = doc(db, "users", user.displayName);
-      const animeRef = collection(usersRef, "animes");
-      await addDoc(animeRef, {
-        username: user.displayName,
-        animeId: anime.mal_id,
-        animeName: anime.title,
-        anime: anime,
-        episodesWatched: 0,
-      });
-      alert("Anime added to list");
-    } catch (e) {
-      console.log("Error", e.message);
-    }
+    const userRef = doc(db, "users", user.displayName);
+    const animeCollectionRef = collection(userRef, "animes");
+    const querySnapshot = await getDocs(animeCollectionRef);
+    const animesList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const animeExists = animesList.some((a) => a.animeId === anime.mal_id);
+
+    console.log(animesList);
+    console.log(currentAnimes);
+
+    if (!animeExists) {
+      try {
+        const usersRef = doc(db, "users", user.displayName);
+        const animeRef = collection(usersRef, "animes");
+        await addDoc(animeRef, {
+          username: user.displayName,
+          animeId: anime.mal_id,
+          animeName: anime.title,
+          anime: [anime],
+          episodesWatched: 0,
+        });
+        alert("Anime added to list");
+      } catch (e) {
+        console.log("Error", e.message);
+      }
+    } else console.log("anime already in list");
   };
 
   useEffect(() => {

@@ -19,24 +19,40 @@ const Search = () => {
   const { search } = useContext(SearchContext);
   const [input, setInput] = useState("");
   const { searchResults, setSearchResults } = useContext(SearchResultsContext);
+  const [animes, setAnimes] = useState([]);
 
   const addToCalendar = async (key) => {
     const currentAnime = searchResults.filter((anime) => anime.mal_id === key);
 
-    try {
-      const usersRef = doc(db, "users", user.displayName);
-      const animeRef = collection(usersRef, "animes");
-      await addDoc(animeRef, {
-        username: user.displayName,
-        animeId: currentAnime[0].mal_id,
-        animeName: currentAnime[0].title,
-        anime: currentAnime,
-        episodesWatched: 0,
-      });
-      alert("Anime added to list");
-    } catch (e) {
-      console.log("Error", e.message);
-    }
+    const userRef = doc(db, "users", user.displayName);
+    const animeCollectionRef = collection(userRef, "animes");
+    const querySnapshot = await getDocs(animeCollectionRef);
+    const animesList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setAnimes(animesList);
+    const animeExists = animesList.some(
+      (a) => a.animeId === currentAnime[0].mal_id
+    );
+
+    if (!animeExists) {
+      try {
+        const usersRef = doc(db, "users", user.displayName);
+        const animeRef = collection(usersRef, "animes");
+        await addDoc(animeRef, {
+          username: user.displayName,
+          animeId: currentAnime[0].mal_id,
+          animeName: currentAnime[0].title,
+          anime: currentAnime,
+          episodesWatched: 0,
+        });
+        alert("Anime added to list");
+      } catch (e) {
+        console.log("Error", e.message);
+      }
+    } else console.log("anime already in list");
   };
 
   const handleSearch = (event) => {

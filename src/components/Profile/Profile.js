@@ -56,11 +56,9 @@ const Profile = () => {
 
       await deleteDoc(doc(usersRef, "animes", `${currentAnime.id}`));
 
-      console.log(currentAnime.id);
       alert("Anime completed");
     } catch (e) {
       console.log("Error", e.message);
-      console.log(currentAnime.id);
     }
   };
 
@@ -80,58 +78,76 @@ const Profile = () => {
         }));
 
         setAnimes(animesList);
+        console.log(animesList);
+        console.log(animes);
       } catch (e) {
         console.error("Error fetching documents: ", e.message);
       }
     };
 
     fetchAnimes();
-  }, [user, animes]);
+  }, [user]);
 
   return (
     <div>
       <h1 className="heading">My List</h1>
 
       <div className="anime-card">
-        {animes.map((anime) => (
-          <div key={anime.id} className="card">
-            <h2>{anime.anime[0].title}</h2>
-            <img
-              src={anime.anime[0].images.jpg.image_url}
-              className="animeImg"
-            />
-            <div className="cardText">
-              <div className="groupText">
-                <p>Status: {anime.anime[0].status}</p>
-                <p>Rating: {anime.anime[0].score}</p>
+        {animes && animes.length > 0 ? (
+          animes.map((anime) => (
+            <div key={anime.id} className="card">
+              {anime.anime && anime.anime[0] ? (
+                <>
+                  <h2>{anime.anime[0].title}</h2>
+                  <img
+                    src={anime.anime[0].images.jpg.image_url}
+                    className="animeImg"
+                    alt={anime.anime[0].title}
+                  />
+                  <div className="cardText">
+                    <div className="groupText">
+                      <p>Status: {anime.anime[0].status}</p>
+                      <p>Rating: {anime.anime[0].score}</p>
 
-                <p>
-                  Episodes watched: {anime.episodesWatched}/
-                  {anime.anime[0].episodes}
-                  <button
-                    onClick={() => addEpisode(anime)}
-                    className="addEpisodeButton"
-                  >
-                    +
-                  </button>
-                </p>
-              </div>
-              <div className="actionsContainer">
-                <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-                <Link to={`/anime/${anime.animeId}`} style={Details}>
-                  View Details
-                </Link>
-                <button
-                  key={anime.id}
-                  onClick={() => addCompleted(anime.id)}
-                  className="addCompletedBtn"
-                >
-                  Add Completed
-                </button>
-              </div>
+                      <p>
+                        Episodes watched: {anime.episodesWatched}/
+                        {anime.anime[0].episodes}
+                        <button
+                          onClick={() => addEpisode(anime)}
+                          className="addEpisodeButton"
+                        >
+                          +
+                        </button>
+                      </p>
+                    </div>
+                    <div className="actionsContainer">
+                      <a href={anime.anime[0].trailer.embed_url}>
+                        Watch Trailer
+                      </a>
+                      <Link
+                        to={`/anime/${anime.animeId}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        key={anime.id}
+                        onClick={() => addCompleted(anime.id)}
+                        className="addCompletedBtn"
+                      >
+                        Add Completed
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <p>Anime data is missing</p>
+              )}
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div>You have no added animes</div>
+        )}
       </div>
     </div>
   );
