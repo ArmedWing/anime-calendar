@@ -78,10 +78,8 @@ const Profile = () => {
         }));
 
         setAnimes(animesList);
-        console.log(animesList);
-        console.log(animes);
       } catch (e) {
-        console.error("Error fetching documents: ", e.message);
+        alert("Error fetching documents: ", e.message);
       }
     };
 

@@ -114,9 +114,9 @@ const Home = () => {
         });
         alert("Anime added to list");
       } catch (e) {
-        console.log("Error", e.message);
+        alert("Error", e.message);
       }
-    } else console.log("anime already in list");
+    } else alert("Anime already in list");
   };
 
   useEffect(() => {
