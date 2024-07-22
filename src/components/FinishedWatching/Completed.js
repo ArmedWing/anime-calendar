@@ -11,17 +11,6 @@ import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Details = {
-  border: "2px solid",
-  borderRadius: "6px",
-  padding: "5px",
-  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
-  color: "white",
-  fontSize: "20px",
-  textDecoration: "none",
-  marginLeft: "20px",
-};
-
 const Completed = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
@@ -83,17 +72,27 @@ const Completed = () => {
                         {anime.anime[0].episodes}
                       </p>
                     </div>
-                    <a href={anime.anime[0].trailer.embed_url}>Watch Trailer</a>
-                    <Link to={`/anime/${anime.animeId}`} style={Details}>
-                      View Details
-                    </Link>
-                    <button
-                      key={anime.id}
-                      onClick={() => deleteAnime(anime.id)}
-                      className="deleteBtn"
-                    >
-                      Delete
-                    </button>
+                    <div className="actionsContainer">
+                      <a
+                        href={anime.anime[0].trailer.embed_url}
+                        className="actionBtn"
+                      >
+                        Watch Trailer
+                      </a>
+                      <Link
+                        to={`/anime/${anime.animeId}`}
+                        className="actionBtn"
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        key={anime.id}
+                        onClick={() => deleteAnime(anime.id)}
+                        className="actionBtn"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (

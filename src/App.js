@@ -20,6 +20,7 @@ import { HomePageProvider } from "./components/HomePageContext";
 import "./components/Login/Login.css";
 import "./components/Register/Register.css";
 import Completed from "./components/FinishedWatching/Completed";
+import "./components/FinishedWatching/Completed.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);

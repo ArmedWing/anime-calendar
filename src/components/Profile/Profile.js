@@ -12,7 +12,6 @@ import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
@@ -22,6 +21,7 @@ const Profile = () => {
       const newEpisodesWatched = anime.episodesWatched + 1;
       const userRef = doc(db, "users", user.displayName);
       const animeRef = doc(userRef, "animes", anime.id);
+      console.log(anime.episodes);
 
       await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
       setAnimes(
