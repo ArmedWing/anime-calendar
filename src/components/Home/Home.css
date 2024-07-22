@@ -46,3 +46,30 @@
   cursor: pointer;
   margin-left: 6px;
 }
+
+.actionBtn {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 6px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.actionsContainer > .actionBtn:nth-child(2) {
+  padding: 7px;
+}
+
+.actionsContainer > .actionBtn:nth-child(3) {
+  padding: 5px;
+}

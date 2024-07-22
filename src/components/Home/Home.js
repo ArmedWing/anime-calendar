@@ -6,16 +6,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { SearchResultsContext } from "../SearchResultContext";
 
-const Details = {
-  border: "2px solid",
-  borderRadius: "6px",
-  padding: "5px",
-  backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
-  color: "white",
-  fontSize: "20px",
-  textDecoration: "none",
-  marginLeft: "20px",
-};
+// const Details = {
+//   border: "2px solid",
+//   borderRadius: "6px",
+//   padding: "5px",
+//   backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
+//   color: "white",
+//   fontSize: "20px",
+//   textDecoration: "none",
+//   marginLeft: "20px",
+// };
 
 const Home = () => {
   const [user] = useAuthState(auth);
@@ -181,10 +181,12 @@ const Home = () => {
                     <p>Status: {anime.status}</p>
                     <p>Rating: {anime.score}</p>
                   </div>
-                  <div className="actionsHomeContainer">
-                    <a href={anime.trailer.embed_url}>Watch Trailer</a>
+                  <div className="actionsContainer">
+                    <a href={anime.trailer.embed_url} className="actionBtn">
+                      Watch Trailer
+                    </a>
                     <button
-                      className="addToCalendarBtn"
+                      className="actionBtn"
                       key={anime.mal_id}
                       onClick={() => addToCalendar(anime)}
                     >
@@ -194,6 +196,7 @@ const Home = () => {
                       to={`/anime/${anime.mal_id}`}
                       state={{ anime }}
                       style={{ textDecoration: "none" }}
+                      className="actionBtn"
                     >
                       View Details
                     </Link>

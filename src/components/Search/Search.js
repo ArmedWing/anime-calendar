@@ -93,14 +93,17 @@ const Search = () => {
             <p>Status: {anime.status}</p>
             <p>Rating: {anime.score}</p>
             <div className="actionsContainer">
+              <a href={anime.trailer.embed_url} className="actionBtn">
+                Watch Trailer
+              </a>
               <button
-                className="addToCalendarBtn"
+                className="actionBtn"
                 key={anime.mal_id}
                 onClick={() => addToCalendar(anime.mal_id)}
               >
                 Add to list
               </button>
-              <Link to={`/anime/${anime.mal_id}`} className="view-details">
+              <Link to={`/anime/${anime.mal_id}`} className="actionBtn">
                 View Details
               </Link>
             </div>

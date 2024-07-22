@@ -74,31 +74,21 @@
   align-self: center;
   cursor: pointer;
 }
-
-.addToCalendarBtn,
-.view-details {
-  display: block;
-  width: 130px;
-  margin: 10px auto;
-  padding: 10px;
-  border: 2px solid;
-  border-radius: 6px;
-  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 18px;
+.actionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-/* .view-details {
-  width: 63%;
-} */
-
-/* .actionsContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  gap: 5px;
-} */
+.actionBtn {
+  border: 2px solid;
+  border-radius: 6px;
+  padding: 6px;
+  background-image: linear-gradient(85deg, #61c7ef, #4833fb);
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
