@@ -21,16 +21,15 @@ const Profile = () => {
       const newEpisodesWatched = anime.episodesWatched + 1;
       const userRef = doc(db, "users", user.displayName);
       const animeRef = doc(userRef, "animes", anime.id);
-      console.log(anime.episodes);
 
       await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
-      setAnimes(
-        animes.map((a) =>
+      setAnimes((prevAnimes) =>
+        prevAnimes.map((a) =>
           a.id === anime.id ? { ...a, episodesWatched: newEpisodesWatched } : a
         )
       );
     } catch (error) {
-      console.error("Error updating episodes watched:", error);
+      alert("Error updating episodes watched:", error);
     }
   };
 
@@ -49,7 +48,7 @@ const Profile = () => {
 
       alert("Anime completed");
     } catch (e) {
-      console.log("Error", e.message);
+      alert("Error", e.message);
     }
   };
 
@@ -77,12 +76,12 @@ const Profile = () => {
 
         setAnimes(animesList);
       } catch (e) {
-        console.error("Error fetching documents: ", e.message);
+        alert("Error fetching documents: ", e.message);
       }
     };
 
     fetchAnimes();
-  }, [user, animes]);
+  }, [animes]);
 
   return (
     <div>
