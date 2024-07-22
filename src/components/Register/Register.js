@@ -5,31 +5,64 @@ import { auth } from "../../firebase";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/home");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    if (!validateEmail(email)) {
+      setError("Invalid email format");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      navigate("/home");
+    } catch (error) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          setError("Email is already in use");
+          break;
+        case "auth/invalid-email":
+          setError("Invalid email format");
+          break;
+        case "auth/operation-not-allowed":
+          setError("Operation not allowed");
+          break;
+        case "auth/weak-password":
+          setError("Password is too weak");
+          break;
+        default:
+          setError("An unexpected error occurred. Please try again later.");
+          break;
+      }
+    }
   };
 
   return (
     <div className="registerContainer">
       <h1> Register </h1>
-      <form className="inputbox">
+      <form className="inputbox" onSubmit={onSubmit}>
         <div className="credentials">
           <label htmlFor="email-address"></label>
           <input
@@ -54,13 +87,16 @@ const Register = () => {
           />
         </div>
 
-        <button type="submit" onClick={onSubmit} className="registerBtn">
+        <button type="submit" className="registerBtn">
           Sign up
         </button>
       </form>
-
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <p>
-        Already have an account? <NavLink to="/login" className="login">Login</NavLink>
+        Already have an account?{" "}
+        <NavLink to="/login" className="login">
+          Login
+        </NavLink>
       </p>
     </div>
   );

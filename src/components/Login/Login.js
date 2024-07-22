@@ -10,28 +10,48 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const signInWithGoogle = async () => {
-    const result = await signInWithPopup(auth, provider);
-    navigate("/home");
-    console.log("Logged in successfully");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      navigate("/home");
+    } catch (error) {
+      setError("Failed to sign in with Google");
+    }
   };
 
-  const onLogin = (e) => {
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
+  const onLogin = async (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        navigate("/home");
-        console.log("Logged in successfully");
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    if (!validateEmail(email)) {
+      setError("Invalid email format");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      navigate("/home");
+    } catch (error) {
+      setError("Invalid email or password");
+    }
   };
 
   return (
@@ -67,7 +87,7 @@ const Login = () => {
               Log in
             </button>
           </form>
-
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <div className="otherOptions">
             <h2 className="googleLogin">Or login with</h2>
             <div className="imgContainer">
