@@ -7,14 +7,37 @@ import {
   updateDoc,
   addDoc,
   deleteDoc,
+  limit,
+  query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
+
+  const fetchAnimes = useCallback(async () => {
+    if (!user) {
+      return <div>No user</div>;
+    }
+
+    try {
+      const userRef = doc(db, "users", user.displayName);
+      const animeCollectionRef = collection(userRef, "animes");
+      const limited = query(animeCollectionRef, limit(2)); // this limits to only 2 animes shown, it saves me lots of usage in firestore.
+      const querySnapshot = await getDocs(limited);
+      const animesList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setAnimes(animesList);
+    } catch (e) {
+      alert("Error fetching documents: ", e.message);
+    }
+  }, [animes]);
 
   const addEpisode = async (anime) => {
     try {
@@ -60,28 +83,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const fetchAnimes = async () => {
-      if (!user) {
-        return <div>No user</div>;
-      }
-
-      try {
-        const userRef = doc(db, "users", user.displayName);
-        const animeCollectionRef = collection(userRef, "animes");
-        const querySnapshot = await getDocs(animeCollectionRef);
-        const animesList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setAnimes(animesList);
-      } catch (e) {
-        alert("Error fetching documents: ", e.message);
-      }
-    };
-
     fetchAnimes();
-  }, [animes]);
+  }, [fetchAnimes]);
 
   return (
     <div>

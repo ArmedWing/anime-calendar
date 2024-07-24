@@ -6,6 +6,8 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  limit,
+  query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import React, { useEffect, useState } from "react";
@@ -32,7 +34,9 @@ const Completed = () => {
       try {
         const userRef = doc(db, "users", user.displayName);
         const animeCollectionRef = collection(userRef, "completed");
-        const querySnapshot = await getDocs(animeCollectionRef);
+        const limited = query(animeCollectionRef, limit(2)); // this limits to only 2 animes shown, it saves me lots of usage in firestore.
+        const querySnapshot = await getDocs(limited);
+
         const animesList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),

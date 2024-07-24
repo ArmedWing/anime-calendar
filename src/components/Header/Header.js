@@ -51,6 +51,10 @@ const Header = () => {
               {" "}
               Completed{" "}
             </Link>
+            <Link to="/forum" style={Navigation}>
+              {" "}
+              Forum{" "}
+            </Link>
           </div>
         )}
       </div>

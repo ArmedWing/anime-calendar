@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,6 +39,12 @@ const Register = () => {
         password
       );
       const user = userCredential.user;
+
+      await updateProfile(user, {
+        displayName: username,
+      });
+      await setDoc(doc(db, "users", username), {});
+
       navigate("/home");
     } catch (error) {
       switch (error.code) {
@@ -64,6 +72,15 @@ const Register = () => {
       <h1> Register </h1>
       <form className="inputbox" onSubmit={onSubmit}>
         <div className="credentials">
+          <label htmlFor="Username"></label>
+          <input
+            type="username"
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            placeholder="Username"
+          />
           <label htmlFor="email-address"></label>
           <input
             type="email"

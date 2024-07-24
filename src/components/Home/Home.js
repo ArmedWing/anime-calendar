@@ -6,16 +6,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { SearchResultsContext } from "../SearchResultContext";
 
-// const Details = {
-//   border: "2px solid",
-//   borderRadius: "6px",
-//   padding: "5px",
-//   backgroundImage: "linear-gradient(85deg, #61c7ef, #4833fb)",
-//   color: "white",
-//   fontSize: "20px",
-//   textDecoration: "none",
-//   marginLeft: "20px",
-// };
 
 const Home = () => {
   const [user] = useAuthState(auth);

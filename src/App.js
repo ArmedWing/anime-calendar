@@ -21,6 +21,8 @@ import "./components/Login/Login.css";
 import "./components/Register/Register.css";
 import Completed from "./components/FinishedWatching/Completed";
 import "./components/FinishedWatching/Completed.css";
+import Threads from "./components/Forum/Threads";
+import CreateThread from "./components/CreateThread/CreateThread";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -58,6 +60,8 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/completed" element={<Completed />} />
                   <Route path="/anime/:mal_id" element={<AnimeDetails />} />
+                  <Route path="/forum" element={<Threads />} />
+                  <Route path="/create-thread" element={<CreateThread />} />
                 </Routes>
               </section>
             </div>
