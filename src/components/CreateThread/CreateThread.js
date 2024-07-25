@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
@@ -10,14 +10,12 @@ const CreateThread = () => {
   const [user] = useAuthState(auth);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [threads, setThreads] = useState([]);
+  const [currentDate, setCurrentDate] = useState("");
 
-  const getDate = () => {
-    const today = new Date();
-    return `${today.slice(0, 21)}`;
-  };
-
-  const [currentDate, setCurrentDate] = useState(getDate());
+  useEffect(() => {
+    const today = new Date().toString().slice(0, 21);
+    setCurrentDate(today);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,6 +34,7 @@ const CreateThread = () => {
     }
     setTitle();
     setText();
+
     navigate("/forum");
   };
   return (
