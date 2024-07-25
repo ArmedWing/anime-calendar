@@ -3,12 +3,25 @@ import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { db } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const CreateThread = () => {
+  const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [threads, setThreads] = useState([]);
+
+  const getDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${month}/${date}/${year}`;
+  };
+
+  const [currentDate, setCurrentDate] = useState(getDate());
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,15 +31,15 @@ const CreateThread = () => {
       await addDoc(threadsCollectionRef, {
         title: title,
         text: text,
+        date: currentDate,
+        username: user.displayName,
       });
     } catch (error) {
       alert(error);
     }
-    console.log(user);
-    console.log({ title });
-    console.log({ text });
     setTitle();
     setText();
+    navigate("/forum");
   };
   return (
     <div>

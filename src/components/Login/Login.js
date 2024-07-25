@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const Login = () => {
   const provider = new GoogleAuthProvider();
@@ -15,6 +16,20 @@ const Login = () => {
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      // Ensure displayName is set
+      if (user.displayName) {
+        // Check if user exists in Firestore
+        const userDocRef = doc(db, "users", user.displayName);
+        const userDoc = await getDoc(userDocRef);
+
+        // If user doesn't exist, add them to Firestore
+        if (!userDoc.exists()) {
+          await setDoc(userDocRef, {});
+        }
+      } else {
+        throw new Error("Google user does not have a display name.");
+      }
       navigate("/home");
     } catch (error) {
       setError("Failed to sign in with Google");
