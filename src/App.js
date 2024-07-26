@@ -22,6 +22,7 @@ import "./components/Register/Register.css";
 import Completed from "./components/FinishedWatching/Completed";
 import "./components/FinishedWatching/Completed.css";
 import Threads from "./components/Forum/Threads";
+import "./components/Forum/Threads.css";
 import CreateThread from "./components/CreateThread/CreateThread";
 
 function App() {
