@@ -25,9 +25,16 @@ const Threads = () => {
     navigate("/create-thread");
   };
 
+  const DeleteThread = async (key) => {
+    const usersRef = doc(db, "users", user.displayName);
+    const currentThread = threads.find((thread) => thread.id === key);
+    await deleteDoc(doc(usersRef, "threads", `${currentThread}`));
+
+    alert("Thread deleted");
+  };
+
   const fetchThreads = useCallback(async () => {
     try {
-      // Fetch all users
       const usersCollectionRef = collection(db, "users");
       const usersSnapshot = await getDocs(usersCollectionRef);
       const usersList = usersSnapshot.docs.map((doc) => ({
@@ -36,7 +43,6 @@ const Threads = () => {
       }));
       setUsers(usersList);
 
-      // Fetch threads for each user
       let allThreads = [];
       for (const user of usersList) {
         const threadsCollectionRef = collection(
@@ -45,7 +51,8 @@ const Threads = () => {
           user.id,
           "threads"
         );
-        const threadsSnapshot = await getDocs(threadsCollectionRef);
+        const threadsQuery = query(threadsCollectionRef, limit(4)); // limit to only 4 threads shown
+        const threadsSnapshot = await getDocs(threadsQuery);
         const userThreads = threadsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -69,7 +76,7 @@ const Threads = () => {
 
   const handleUpdate = () => {
     setEditingThread(null);
-    fetchThreads(); // Refresh the thread list after an update
+    fetchThreads();
   };
 
   const handleCancel = () => {
@@ -90,7 +97,14 @@ const Threads = () => {
               <p>{thread.text}</p>
               <p>Posted: {thread.date}</p>
               {thread.username === user.displayName && (
-                <button onClick={() => handleEdit(thread)}>Edit Thread</button>
+                <div>
+                  <button onClick={() => handleEdit(thread)}>
+                    Edit Thread
+                  </button>
+                  <button key={thread} onClick={() => DeleteThread()}>
+                    Delete Thread
+                  </button>
+                </div>
               )}
             </div>
           ))

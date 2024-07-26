@@ -42,6 +42,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.edit-modal-content form textarea {
+  height: 170px;
+}
 
 .edit-modal-content form button {
   padding: 10px 20px;
