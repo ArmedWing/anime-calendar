@@ -45,15 +45,14 @@ const CreateThread = () => {
           <label htmlFor="thread">Title</label>
           <input
             type="text"
-            name="thread"
+            name="threadTitle"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="thread">Text</label>
-          <input
-            type="text"
-            name="thread"
+          <textarea
+            name="threadText"
             required
             value={text}
             onChange={(e) => setText(e.target.value)}
