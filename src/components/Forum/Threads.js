@@ -28,9 +28,10 @@ const Threads = () => {
   const DeleteThread = async (key) => {
     const usersRef = doc(db, "users", user.displayName);
     const currentThread = threads.find((thread) => thread.id === key);
-    await deleteDoc(doc(usersRef, "threads", `${currentThread}`));
+    await deleteDoc(doc(usersRef, "threads", `${currentThread.id}`));
 
     alert("Thread deleted");
+    console.log(currentThread);
   };
 
   const fetchThreads = useCallback(async () => {
@@ -51,7 +52,7 @@ const Threads = () => {
           user.id,
           "threads"
         );
-        const threadsQuery = query(threadsCollectionRef, limit(4)); // limit to only 4 threads shown
+        const threadsQuery = query(threadsCollectionRef, limit(3)); // limit to only 3 threads shown
         const threadsSnapshot = await getDocs(threadsQuery);
         const userThreads = threadsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -101,7 +102,10 @@ const Threads = () => {
                   <button onClick={() => handleEdit(thread)}>
                     Edit Thread
                   </button>
-                  <button key={thread} onClick={() => DeleteThread()}>
+                  <button
+                    key={thread.id}
+                    onClick={() => DeleteThread(thread.id)}
+                  >
                     Delete Thread
                   </button>
                 </div>
