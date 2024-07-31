@@ -45,23 +45,33 @@ const Threads = () => {
       setUsers(usersList);
 
       let allThreads = [];
+      const maxThreads = 3; // total number of threads to fetch
+      let fetchedThreads = 0;
+
       for (const user of usersList) {
+        if (fetchedThreads >= maxThreads) break;
+
         const threadsCollectionRef = collection(
           db,
           "users",
           user.id,
           "threads"
         );
-        const threadsQuery = query(threadsCollectionRef, limit(3)); // limit to only 3 threads shown
+        const threadsQuery = query(
+          threadsCollectionRef,
+          limit(maxThreads - fetchedThreads)
+        ); // limit to only 4 threads shown
         const threadsSnapshot = await getDocs(threadsQuery);
         const userThreads = threadsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         allThreads = allThreads.concat(userThreads);
+        fetchedThreads += userThreads.length;
       }
 
-      setThreads(allThreads);
+      // setThreads(allThreads);
+      setThreads(allThreads.slice(0, maxThreads));
     } catch (e) {
       alert("Error fetching documents: " + e.message);
     }

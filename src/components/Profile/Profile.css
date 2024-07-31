@@ -20,6 +20,9 @@
   margin-right: 20px;
   padding-left: 30px;
 }
+.card h2 {
+  padding: 10px;
+}
 
 .anime-card {
   display: flex;
