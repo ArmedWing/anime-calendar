@@ -20,9 +20,46 @@ const Threads = () => {
   const [user] = useAuthState(auth);
   const [threads, setThreads] = useState([]);
   const [users, setUsers] = useState([]);
+  const [likes, setLikes] = useState({});
   const [editingThread, setEditingThread] = useState(null);
   const createThread = () => {
     navigate("/create-thread");
+  };
+
+  const addLike = async (thread) => {
+    try {
+      const newLikes = thread.likes + 1;
+      const userRef = doc(db, "users", user.displayName);
+      const threadRef = doc(userRef, "threads", thread.id);
+
+      await updateDoc(threadRef, { likes: newLikes });
+      setThreads((prevThreads) =>
+        prevThreads.map((t) =>
+          t.id === thread.id ? { ...t, likes: newLikes } : t
+        )
+      );
+      setLikes((prevLikes) => ({ ...prevLikes, [thread.id]: true }));
+    } catch (error) {
+      alert("Error updating likes:", error);
+    }
+  };
+
+  const unlike = async (thread) => {
+    try {
+      const newLikes = thread.likes - 1;
+      const userRef = doc(db, "users", user.displayName);
+      const threadRef = doc(userRef, "threads", thread.id);
+
+      await updateDoc(threadRef, { likes: newLikes });
+      setThreads((prevThreads) =>
+        prevThreads.map((t) =>
+          t.id === thread.id ? { ...t, likes: newLikes } : t
+        )
+      );
+      setLikes((prevLikes) => ({ ...prevLikes, [thread.id]: false }));
+    } catch (error) {
+      alert("Error updating likes:", error);
+    }
   };
 
   const DeleteThread = async (key) => {
@@ -60,7 +97,7 @@ const Threads = () => {
         const threadsQuery = query(
           threadsCollectionRef,
           limit(maxThreads - fetchedThreads)
-        ); // limit to only 4 threads shown
+        );
         const threadsSnapshot = await getDocs(threadsQuery);
         const userThreads = threadsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -70,7 +107,6 @@ const Threads = () => {
         fetchedThreads += userThreads.length;
       }
 
-      // setThreads(allThreads);
       setThreads(allThreads.slice(0, maxThreads));
     } catch (e) {
       alert("Error fetching documents: " + e.message);
@@ -107,6 +143,7 @@ const Threads = () => {
               <h2>Title: {thread.title}</h2>
               <p>{thread.text}</p>
               <p>Posted: {thread.date}</p>
+              <p>Likes: {thread.likes}</p>
               {thread.username === user.displayName && (
                 <div>
                   <button onClick={() => handleEdit(thread)}>
@@ -118,6 +155,16 @@ const Threads = () => {
                   >
                     Delete Thread
                   </button>
+                  {likes[thread.id] ? (
+                    <button
+                      onClick={() => unlike(thread)}
+                      style={{ backgroundColor: "red" }}
+                    >
+                      Unlike
+                    </button>
+                  ) : (
+                    <button onClick={() => addLike(thread)}>Like</button>
+                  )}
                 </div>
               )}
             </div>
