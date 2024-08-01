@@ -24,6 +24,9 @@ const Threads = () => {
   const [likes, setLikes] = useState({});
   const [editingThread, setEditingThread] = useState(null);
   const [addComment, setAddComment] = useState(null);
+  const [replyTo, setReplyTo] = useState(null);
+  const [editComment, setEditComment] = useState(null);
+
   const createThread = () => {
     navigate("/create-thread");
   };
@@ -123,19 +126,46 @@ const Threads = () => {
     setEditingThread(thread);
   };
 
-  const handleComment = (thread) => {
+  const handleComment = (
+    thread,
+    parentComment = null,
+    commentToEdit = null
+  ) => {
     setAddComment(thread);
+    setReplyTo(parentComment);
+    setEditComment(commentToEdit);
   };
 
   const handleUpdate = () => {
     setEditingThread(null);
     setAddComment(null);
+    setReplyTo(null);
+    setEditComment(null);
     fetchThreads();
   };
 
   const handleCancel = () => {
     setEditingThread(null);
     setAddComment(null);
+    setReplyTo(null);
+    setEditComment(null);
+  };
+
+  const renderComments = (comments, thread) => {
+    if (!comments) return null;
+
+    return comments.map((comment, index) => (
+      <div key={index} style={{ marginLeft: replyTo ? "20px" : "0" }}>
+        <p>
+          {comment.user}: {comment.comment}
+        </p>
+        <button onClick={() => handleComment(thread, null, comment)}>
+          Edit
+        </button>
+        <button onClick={() => handleComment(thread, comment)}>Reply</button>
+        {comment.replies && renderComments(comment.replies, thread)}
+      </div>
+    ));
   };
 
   return (
@@ -152,43 +182,31 @@ const Threads = () => {
               <p>{thread.text}</p>
               <p>Posted: {thread.date}</p>
               <p>Likes: {thread.likes}</p>
-              {thread.comments && (
+              {thread.username === user.displayName && (
                 <div>
-                  <h3>Comments:</h3>
-                  {thread.comments.map((comment, index) => (
-                    <div>
-                      <p key={index}>{comment.user}</p>
-                      <p key={index}>{comment.comment}</p>
-                    </div>
-                  ))}
+                  <button onClick={() => handleEdit(thread)}>
+                    Edit Thread
+                  </button>
+                  <button
+                    key={thread.id}
+                    onClick={() => DeleteThread(thread.id)}
+                  >
+                    Delete Thread
+                  </button>
+                  {likes[thread.id] ? (
+                    <button
+                      onClick={() => unlike(thread)}
+                      style={{ backgroundColor: "red" }}
+                    >
+                      Unlike
+                    </button>
+                  ) : (
+                    <button onClick={() => addLike(thread)}>Like</button>
+                  )}
+                  <button onClick={() => handleComment(thread)}>Comment</button>
                 </div>
               )}
-              <div>
-                {likes[thread.id] ? (
-                  <button
-                    onClick={() => unlike(thread)}
-                    style={{ backgroundColor: "red" }}
-                  >
-                    Unlike
-                  </button>
-                ) : (
-                  <button onClick={() => addLike(thread)}>Like</button>
-                )}
-                <button onClick={() => handleComment(thread)}>Comment</button>
-                {thread.username === user.displayName && (
-                  <>
-                    <button onClick={() => handleEdit(thread)}>
-                      Edit Thread
-                    </button>
-                    <button
-                      key={thread.id}
-                      onClick={() => deleteThread(thread.id)}
-                    >
-                      Delete Thread
-                    </button>
-                  </>
-                )}
-              </div>
+              {renderComments(thread.comments, thread)}
             </div>
           ))
         ) : (
@@ -205,6 +223,8 @@ const Threads = () => {
       {addComment && (
         <AddComment
           thread={addComment}
+          parentComment={replyTo}
+          commentToEdit={editComment}
           onUpdate={handleUpdate}
           onCancel={handleCancel}
         />
