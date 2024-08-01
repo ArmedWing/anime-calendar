@@ -28,6 +28,7 @@ const CreateThread = () => {
         text: text,
         date: currentDate,
         username: user.displayName,
+        likes: 0,
       });
     } catch (error) {
       alert(error);
