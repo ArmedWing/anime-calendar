@@ -151,19 +151,26 @@ const Threads = () => {
     setEditComment(null);
   };
 
-  const renderComments = (comments, thread) => {
+  const renderComments = (comments, thread, replyTo = null) => {
     if (!comments) return null;
 
     return comments.map((comment, index) => (
-      <div key={index} style={{ marginLeft: replyTo ? "20px" : "0" }}>
-        <p>
-          {comment.user}: {comment.comment}
-        </p>
-        <button onClick={() => handleComment(thread, null, comment)}>
-          Edit
-        </button>
-        <button onClick={() => handleComment(thread, comment)}>Reply</button>
-        {comment.replies && renderComments(comment.replies, thread)}
+      <div
+        key={index}
+        className="comment-container"
+        style={{ marginLeft: replyTo ? "20px" : "0" }} // Indentation for replies
+      >
+        <div className="comment">
+          <p>
+            <strong>{comment.user}:</strong> {comment.comment}
+          </p>
+          <button onClick={() => handleComment(thread, null, comment)}>
+            Edit
+          </button>
+          <button onClick={() => handleComment(thread, comment)}>Reply</button>
+        </div>
+        {/* Render replies if any */}
+        {comment.replies && renderComments(comment.replies, thread, comment)}
       </div>
     ));
   };

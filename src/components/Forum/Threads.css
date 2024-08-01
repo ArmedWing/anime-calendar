@@ -70,3 +70,26 @@ h2 {
 .page-title {
   color: white;
 }
+
+.comment-container {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.comment {
+  font-size: 14px;
+  color: #333;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.comment-container > .comment {
+  border-top: none;
+}
+
+.comment-container .comment-container {
+  background-color: #f1f1f1;
+}
