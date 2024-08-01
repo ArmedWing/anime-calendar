@@ -14,6 +14,7 @@ import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import EditThread from "../EditThread/EditThread";
+import AddComment from "../AddComment/AddComment";
 
 const Threads = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Threads = () => {
   const [users, setUsers] = useState([]);
   const [likes, setLikes] = useState({});
   const [editingThread, setEditingThread] = useState(null);
+  const [addComment, setAddComment] = useState(null);
   const createThread = () => {
     navigate("/create-thread");
   };
@@ -121,13 +123,19 @@ const Threads = () => {
     setEditingThread(thread);
   };
 
+  const handleComment = (thread) => {
+    setAddComment(thread);
+  };
+
   const handleUpdate = () => {
     setEditingThread(null);
+    setAddComment(null);
     fetchThreads();
   };
 
   const handleCancel = () => {
     setEditingThread(null);
+    setAddComment(null);
   };
 
   return (
@@ -144,29 +152,43 @@ const Threads = () => {
               <p>{thread.text}</p>
               <p>Posted: {thread.date}</p>
               <p>Likes: {thread.likes}</p>
-              {thread.username === user.displayName && (
+              {thread.comments && (
                 <div>
-                  <button onClick={() => handleEdit(thread)}>
-                    Edit Thread
-                  </button>
-                  <button
-                    key={thread.id}
-                    onClick={() => DeleteThread(thread.id)}
-                  >
-                    Delete Thread
-                  </button>
-                  {likes[thread.id] ? (
-                    <button
-                      onClick={() => unlike(thread)}
-                      style={{ backgroundColor: "red" }}
-                    >
-                      Unlike
-                    </button>
-                  ) : (
-                    <button onClick={() => addLike(thread)}>Like</button>
-                  )}
+                  <h3>Comments:</h3>
+                  {thread.comments.map((comment, index) => (
+                    <div>
+                      <p key={index}>{comment.user}</p>
+                      <p key={index}>{comment.comment}</p>
+                    </div>
+                  ))}
                 </div>
               )}
+              <div>
+                {likes[thread.id] ? (
+                  <button
+                    onClick={() => unlike(thread)}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Unlike
+                  </button>
+                ) : (
+                  <button onClick={() => addLike(thread)}>Like</button>
+                )}
+                <button onClick={() => handleComment(thread)}>Comment</button>
+                {thread.username === user.displayName && (
+                  <>
+                    <button onClick={() => handleEdit(thread)}>
+                      Edit Thread
+                    </button>
+                    <button
+                      key={thread.id}
+                      onClick={() => deleteThread(thread.id)}
+                    >
+                      Delete Thread
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           ))
         ) : (
@@ -176,6 +198,13 @@ const Threads = () => {
       {editingThread && (
         <EditThread
           thread={editingThread}
+          onUpdate={handleUpdate}
+          onCancel={handleCancel}
+        />
+      )}
+      {addComment && (
+        <AddComment
+          thread={addComment}
           onUpdate={handleUpdate}
           onCancel={handleCancel}
         />

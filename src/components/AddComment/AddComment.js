@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase";
-import "./EditThread.css";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 
-const EditThread = ({ thread, onUpdate, onCancel }) => {
-  const [editTitle, setEditTitle] = useState("");
-  const [editText, setEditText] = useState("");
+const AddComment = ({ thread, onUpdate, onCancel }) => {
   const [user] = useAuthState(auth);
+  const [addComment, setAddComment] = useState("");
 
   useEffect(() => {
     if (thread) {
-      setEditTitle(thread.title);
-      setEditText(thread.text);
+      setAddComment("");
     }
   }, [thread]);
 
@@ -28,41 +26,29 @@ const EditThread = ({ thread, onUpdate, onCancel }) => {
         thread.id
       );
       await updateDoc(threadRef, {
-        title: editTitle,
-        text: editText,
+        comments: arrayUnion({ user: user.displayName, comment: addComment }),
       });
       onUpdate();
     } catch (error) {
       alert("Error updating document: " + error.message);
-      
     }
   };
 
   return (
     <div className="edit-modal">
       <div className="edit-modal-content">
-        <h2>Edit Thread</h2>
+        <h2>Add Comment</h2>
         <form onSubmit={handleUpdate}>
-          <div>
-            <label htmlFor="editTitle">Title</label>
-            <input
-              type="text"
-              id="editTitle"
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
-              required
-            />
-          </div>
           <div>
             <label htmlFor="editText">Text</label>
             <textarea
               id="editText"
-              value={editText}
-              onChange={(e) => setEditText(e.target.value)}
+              value={addComment}
+              onChange={(e) => setAddComment(e.target.value)}
               required
             />
           </div>
-          <button type="submit">Update Thread</button>
+          <button type="submit">Add Comment</button>
           <button type="button" onClick={onCancel}>
             Cancel
           </button>
@@ -72,4 +58,4 @@ const EditThread = ({ thread, onUpdate, onCancel }) => {
   );
 };
 
-export default EditThread;
+export default AddComment;
