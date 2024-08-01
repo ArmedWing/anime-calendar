@@ -76,6 +76,7 @@ const Threads = () => {
     console.log(currentThread);
   };
 
+
   const fetchThreads = useCallback(async () => {
     try {
       const usersCollectionRef = collection(db, "users");

@@ -11,6 +11,7 @@ const AddComment = ({
   commentToEdit = null,
   onUpdate,
   onCancel,
+  isReply = false,
 }) => {
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
