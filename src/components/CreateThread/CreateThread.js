@@ -38,6 +38,10 @@ const CreateThread = () => {
 
     navigate("/forum");
   };
+
+  const handleCancel = () => {
+    navigate("/forum");
+  };
   return (
     <div>
       <h2 className="threadTitle">Create a Thread</h2>
@@ -61,6 +65,9 @@ const CreateThread = () => {
         </div>
         <button type="submit" className="createThreadBtn">
           CREATE THREAD
+        </button>
+        <button type="button" onClick={handleCancel}>
+          Cancel
         </button>
       </form>
     </div>
