@@ -1,4 +1,3 @@
-// ThreadLikeDislike.jsx
 import React, { useState, useEffect } from "react";
 import {
   doc,
@@ -7,14 +6,15 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { db } from "../../firebase"; // Adjust the import as needed
-import { auth } from "../../firebase"; // Adjust the import as needed
+import { db } from "../../firebase";
+import { auth } from "../../firebase";
 
 const ThreadLikeDislike = ({
   threadId,
   initialLikes,
   likedByUser,
   onUpdate,
+  userName,
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [likes, setLikes] = useState(initialLikes);
@@ -27,19 +27,16 @@ const ThreadLikeDislike = ({
   const toggleLike = async () => {
     try {
       if (!user) throw new Error("User not authenticated");
-
-      const userRef = doc(db, "users", user.displayName);
+      const userRef = doc(db, "users", userName);
       const threadRef = doc(userRef, "threads", threadId);
 
       if (isLiked) {
-        // Unlike the thread
         await updateDoc(threadRef, {
           likes: increment(-1),
           likesList: arrayRemove(user.displayName),
         });
         setLikes(likes - 1);
       } else {
-        // Like the thread
         await updateDoc(threadRef, {
           likes: increment(1),
           likesList: arrayUnion(user.displayName),
@@ -48,7 +45,7 @@ const ThreadLikeDislike = ({
       }
 
       setIsLiked(!isLiked);
-      onUpdate(); // Call the parent function to refresh or update the state
+      onUpdate();
     } catch (error) {
       console.error("Error updating thread likes: ", error);
     }

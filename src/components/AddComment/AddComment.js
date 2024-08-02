@@ -14,17 +14,16 @@ const AddComment = ({
 }) => {
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
-  const commentId = useId();
   const [currentDate, setCurrentDate] = useState("");
+  const commentId = useId();
 
   useEffect(() => {
+    const today = new Date().toString().slice(0, 21);
+    setCurrentDate(today);
+
     if (commentToEdit) {
-      const today = new Date().toString().slice(0, 21);
-      setCurrentDate(today);
       setAddComment(commentToEdit.comment);
     } else {
-      const today = new Date().toString().slice(0, 21);
-      setCurrentDate(today);
       setAddComment("");
     }
   }, [thread, parentComment, commentToEdit]);
@@ -35,7 +34,7 @@ const AddComment = ({
       const threadRef = doc(
         db,
         "users",
-        user.displayName,
+        thread.username,
         "threads",
         thread.id
       );
@@ -58,15 +57,16 @@ const AddComment = ({
         });
         await updateDoc(threadRef, { comments: updatedComments });
       } else {
+        const newComment = {
+          user: user.displayName,
+          comment: addComment,
+          id: commentId,
+          likes: 0,
+          likesList: [],
+          date: currentDate,
+        };
         await updateDoc(threadRef, {
-          comments: arrayUnion({
-            user: user.displayName,
-            comment: addComment,
-            id: commentId,
-            likes: 0,
-            likesList: [],
-            date: currentDate,
-          }),
+          comments: arrayUnion(newComment),
         });
       }
 
@@ -78,7 +78,7 @@ const AddComment = ({
 
   const updateComment = (comments, commentToUpdate, newCommentText) => {
     return comments.map((comment) => {
-      if (comment === commentToUpdate) {
+      if (comment.id === commentToUpdate.id) {
         return {
           ...comment,
           comment: newCommentText,
@@ -96,7 +96,7 @@ const AddComment = ({
 
   const addReply = (comments, parent, newReply) => {
     return comments.map((comment) => {
-      if (comment === parent) {
+      if (comment.id === parent.id) {
         return {
           ...comment,
           replies: [...(comment.replies || []), newReply],

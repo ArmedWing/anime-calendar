@@ -9,6 +9,7 @@ const CommentLikeDislike = ({
   initialLikes,
   likedByUser,
   onUpdate,
+  userName,
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [likes, setLikes] = useState(initialLikes);
@@ -22,7 +23,7 @@ const CommentLikeDislike = ({
     try {
       if (!user) throw new Error("User not authenticated");
 
-      const userRef = doc(db, "users", user.displayName);
+      const userRef = doc(db, "users", userName);
       const threadRef = doc(userRef, "threads", threadId);
 
       const threadSnap = await getDoc(threadRef);

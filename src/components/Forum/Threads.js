@@ -200,6 +200,7 @@ const Threads = () => {
               Delete
             </button>
             <CommentLikeDislike
+              userName={thread.username}
               threadId={thread.id}
               commentId={comment.id}
               initialLikes={comment.likes}
@@ -231,7 +232,7 @@ const Threads = () => {
               <p>{thread.text}</p>
               <p>Posted: {thread.date}</p>
               <p>Likes: {thread.likes}</p>
-              {thread.username === user.displayName && (
+              {thread.username === user.displayName ? (
                 <div className="actionBtns">
                   <button onClick={() => handleEdit(thread)}>Edit</button>
                   <button onClick={() => handleComment(thread)}>Reply</button>
@@ -243,6 +244,20 @@ const Threads = () => {
                   </button>
 
                   <ThreadLikeDislike
+                    threadId={thread.id}
+                    initialLikes={thread.likes}
+                    likedByUser={
+                      thread.likesList &&
+                      thread.likesList.includes(user.displayName)
+                    }
+                    onUpdate={handleThreadUpdate}
+                  />
+                </div>
+              ) : (
+                <div className="actionBtns">
+                  <button onClick={() => handleComment(thread)}>Reply</button>
+                  <ThreadLikeDislike
+                    userName={thread.username}
                     threadId={thread.id}
                     initialLikes={thread.likes}
                     likedByUser={
