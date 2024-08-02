@@ -93,3 +93,7 @@ h2 {
 .comment-container .comment-container {
   background-color: #f1f1f1;
 }
+
+.actionBtns {
+  display: flex;
+}

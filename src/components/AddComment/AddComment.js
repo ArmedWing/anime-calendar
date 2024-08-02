@@ -15,11 +15,16 @@ const AddComment = ({
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
   const commentId = useId();
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     if (commentToEdit) {
+      const today = new Date().toString().slice(0, 21);
+      setCurrentDate(today);
       setAddComment(commentToEdit.comment);
     } else {
+      const today = new Date().toString().slice(0, 21);
+      setCurrentDate(today);
       setAddComment("");
     }
   }, [thread, parentComment, commentToEdit]);
@@ -49,6 +54,7 @@ const AddComment = ({
           id: commentId,
           likes: 0,
           likesList: [],
+          date: currentDate,
         });
         await updateDoc(threadRef, { comments: updatedComments });
       } else {
@@ -59,6 +65,7 @@ const AddComment = ({
             id: commentId,
             likes: 0,
             likesList: [],
+            date: currentDate,
           }),
         });
       }
