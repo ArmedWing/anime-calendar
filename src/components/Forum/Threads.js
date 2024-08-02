@@ -10,12 +10,18 @@ import {
   limit,
   query,
   getDoc,
+  increment,
+  arrayUnion,
+  arrayRemove,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import EditThread from "../EditThread/EditThread";
 import AddComment from "../AddComment/AddComment";
+import ThreadLikeDislike from "../ThreadLikeDislike/ThreadLikeDislike";
+import CommentLikeDislike from "../CommentsLikeDislike/CommentsLikeDislike";
 
 const Threads = () => {
   const navigate = useNavigate();
@@ -30,42 +36,6 @@ const Threads = () => {
 
   const createThread = () => {
     navigate("/create-thread");
-  };
-
-  const addLike = async (thread) => {
-    try {
-      const newLikes = thread.likes + 1;
-      const userRef = doc(db, "users", user.displayName);
-      const threadRef = doc(userRef, "threads", thread.id);
-
-      await updateDoc(threadRef, { likes: newLikes });
-      setThreads((prevThreads) =>
-        prevThreads.map((t) =>
-          t.id === thread.id ? { ...t, likes: newLikes } : t
-        )
-      );
-      setLikes((prevLikes) => ({ ...prevLikes, [thread.id]: true }));
-    } catch (error) {
-      alert("Error updating likes:", error);
-    }
-  };
-
-  const unlike = async (thread) => {
-    try {
-      const newLikes = thread.likes - 1;
-      const userRef = doc(db, "users", user.displayName);
-      const threadRef = doc(userRef, "threads", thread.id);
-
-      await updateDoc(threadRef, { likes: newLikes });
-      setThreads((prevThreads) =>
-        prevThreads.map((t) =>
-          t.id === thread.id ? { ...t, likes: newLikes } : t
-        )
-      );
-      setLikes((prevLikes) => ({ ...prevLikes, [thread.id]: false }));
-    } catch (error) {
-      alert("Error updating likes:", error);
-    }
   };
 
   const DeleteComment = async (thread, commentId) => {
@@ -193,6 +163,14 @@ const Threads = () => {
     setEditComment(null);
   };
 
+  const handleThreadUpdate = () => {
+    fetchThreads(); // Refresh the thread data after a like/dislike action
+  };
+
+  const handleCommentUpdate = () => {
+    fetchThreads(); // Refresh the thread data after a comment like/dislike action
+  };
+
   const renderComments = (comments, thread, replyTo = null) => {
     if (!comments) return null;
 
@@ -206,6 +184,7 @@ const Threads = () => {
           <p>
             <strong>{comment.user}:</strong> {comment.comment}
           </p>
+          <p>Likes: {comment.likes}</p>
           <button onClick={() => handleComment(thread, null, comment)}>
             Edit
           </button>
@@ -216,6 +195,15 @@ const Threads = () => {
           >
             Delete Comment
           </button>
+          <CommentLikeDislike
+            threadId={thread.id}
+            commentId={comment.id}
+            initialLikes={comment.likes}
+            likedByUser={
+              comment.likesList && comment.likesList.includes(user.displayName)
+            }
+            onUpdate={handleCommentUpdate}
+          />
         </div>
 
         {comment.replies && renderComments(comment.replies, thread, comment)}
@@ -248,7 +236,7 @@ const Threads = () => {
                   >
                     Delete Thread
                   </button>
-                  {likes[thread.id] ? (
+                  {/* {likes[thread.id] ? (
                     <button
                       onClick={() => unlike(thread)}
                       style={{ backgroundColor: "red" }}
@@ -257,7 +245,16 @@ const Threads = () => {
                     </button>
                   ) : (
                     <button onClick={() => addLike(thread)}>Like</button>
-                  )}
+                  )} */}
+                  <ThreadLikeDislike
+                    threadId={thread.id}
+                    initialLikes={thread.likes}
+                    likedByUser={
+                      thread.likesList &&
+                      thread.likesList.includes(user.displayName)
+                    }
+                    onUpdate={handleThreadUpdate}
+                  />
                   <button onClick={() => handleComment(thread)}>Comment</button>
                 </div>
               )}

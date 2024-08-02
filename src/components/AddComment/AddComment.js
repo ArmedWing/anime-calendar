@@ -11,7 +11,6 @@ const AddComment = ({
   commentToEdit = null,
   onUpdate,
   onCancel,
-  isReply = false,
 }) => {
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
@@ -48,6 +47,8 @@ const AddComment = ({
           user: user.displayName,
           comment: addComment,
           id: commentId,
+          likes: 0,
+          likesList: [],
         });
         await updateDoc(threadRef, { comments: updatedComments });
       } else {
@@ -56,6 +57,8 @@ const AddComment = ({
             user: user.displayName,
             comment: addComment,
             id: commentId,
+            likes: 0,
+            likesList: [],
           }),
         });
       }
