@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase";
-
+import { useId } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 
@@ -15,6 +15,7 @@ const AddComment = ({
 }) => {
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
+  const commentId = useId();
 
   useEffect(() => {
     if (commentToEdit) {
@@ -36,7 +37,6 @@ const AddComment = ({
       );
 
       if (commentToEdit) {
-        // Update existing comment
         const updatedComments = updateComment(
           thread.comments || [],
           commentToEdit,
@@ -44,20 +44,18 @@ const AddComment = ({
         );
         await updateDoc(threadRef, { comments: updatedComments });
       } else if (parentComment) {
-        // Add a reply to a comment
         const updatedComments = addReply(thread.comments || [], parentComment, {
           user: user.displayName,
           comment: addComment,
-          replies: [],
+          id: commentId,
         });
         await updateDoc(threadRef, { comments: updatedComments });
       } else {
-        // Add a new top-level comment
         await updateDoc(threadRef, {
           comments: arrayUnion({
             user: user.displayName,
             comment: addComment,
-            replies: [],
+            id: commentId,
           }),
         });
       }

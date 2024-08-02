@@ -9,6 +9,7 @@ import {
   deleteDoc,
   limit,
   query,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -67,6 +68,47 @@ const Threads = () => {
     }
   };
 
+  const DeleteComment = async (thread, commentId) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("User not authenticated");
+
+      const usersRef = doc(db, "users", user.displayName);
+      const threadRef = doc(usersRef, "threads", thread);
+      const threadSnap = await getDoc(threadRef);
+
+      if (!threadSnap.exists()) throw new Error("Thread not found");
+
+      const threadData = threadSnap.data();
+      let comments = threadData.comments || [];
+
+      // Function to recursively remove a comment or reply by ID
+      const removeCommentOrReply = (commentsArray, targetId) => {
+        return commentsArray
+          .map((comment) => {
+            if (comment.id === targetId) {
+              return null;
+            } else if (comment.replies && Array.isArray(comment.replies)) {
+              // Recursively handle nested replies
+              comment.replies = removeCommentOrReply(comment.replies, targetId);
+            }
+            return comment;
+          })
+          .filter((comment) => comment !== null); // Filter out the deleted comments
+      };
+
+      comments = removeCommentOrReply(comments, commentId);
+
+      await updateDoc(threadRef, { comments });
+
+      console.log("Comment/reply deleted successfully");
+    } catch (error) {
+      console.error("Error deleting comment/reply: ", error);
+      console.log(thread);
+      alert("Error deleting comment/reply: " + error.message);
+    }
+  };
+
   const DeleteThread = async (key) => {
     const usersRef = doc(db, "users", user.displayName);
     const currentThread = threads.find((thread) => thread.id === key);
@@ -75,7 +117,6 @@ const Threads = () => {
     alert("Thread deleted");
     console.log(currentThread);
   };
-
 
   const fetchThreads = useCallback(async () => {
     try {
@@ -159,7 +200,7 @@ const Threads = () => {
       <div
         key={index}
         className="comment-container"
-        style={{ marginLeft: replyTo ? "20px" : "0" }} // Indentation for replies
+        style={{ marginLeft: replyTo ? "20px" : "0" }}
       >
         <div className="comment">
           <p>
@@ -169,8 +210,14 @@ const Threads = () => {
             Edit
           </button>
           <button onClick={() => handleComment(thread, comment)}>Reply</button>
+          <button
+            key={comment.id}
+            onClick={() => DeleteComment(thread.id, comment.id)}
+          >
+            Delete Comment
+          </button>
         </div>
-        {/* Render replies if any */}
+
         {comment.replies && renderComments(comment.replies, thread, comment)}
       </div>
     ));
