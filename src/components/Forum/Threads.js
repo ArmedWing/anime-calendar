@@ -181,36 +181,53 @@ const Threads = () => {
         style={{ marginLeft: replyTo ? "20px" : "0" }}
       >
         <div className="comment">
-          <h1>Posted by: {comment.user}</h1>
-          <p>{comment.comment}</p>
+          <article className="textArea">{comment.comment}</article>
 
-          <p>Posted: {comment.date}</p>
+          <p>
+            Posted: {comment.date} by {comment.user}
+          </p>
           <p>Likes: {comment.likes}</p>
-          <div className="actionBtns">
-            <button onClick={() => handleComment(thread, null, comment)}>
-              Edit
-            </button>
-            <button onClick={() => handleComment(thread, comment)}>
-              Reply
-            </button>
-            <button
-              key={comment.id}
-              onClick={() => DeleteComment(thread.id, comment.id)}
-            >
-              Delete
-            </button>
-            <CommentLikeDislike
-              userName={thread.username}
-              threadId={thread.id}
-              commentId={comment.id}
-              initialLikes={comment.likes}
-              likedByUser={
-                comment.likesList &&
-                comment.likesList.includes(user.displayName)
-              }
-              onUpdate={handleCommentUpdate}
-            />
-          </div>
+          {thread.username === user.displayName ? (
+            <div className="actionBtns">
+              <button onClick={() => handleComment(thread, null, comment)}>
+                Edit
+              </button>
+              <button onClick={() => handleComment(thread, comment)}>
+                Reply
+              </button>
+              <button
+                key={comment.id}
+                onClick={() => DeleteComment(thread.id, comment.id)}
+              >
+                Delete
+              </button>
+              <CommentLikeDislike
+                userName={thread.username}
+                threadId={thread.id}
+                commentId={comment.id}
+                initialLikes={comment.likes}
+                likedByUser={
+                  comment.likesList &&
+                  comment.likesList.includes(user.displayName)
+                }
+                onUpdate={handleCommentUpdate}
+              />
+            </div>
+          ) : (
+            <div className="actionBtns">
+              <button onClick={() => handleComment(thread)}>Reply</button>
+              <ThreadLikeDislike
+                userName={thread.username}
+                threadId={thread.id}
+                initialLikes={thread.likes}
+                likedByUser={
+                  thread.likesList &&
+                  thread.likesList.includes(user.displayName)
+                }
+                onUpdate={handleThreadUpdate}
+              />
+            </div>
+          )}
         </div>
 
         {comment.replies && renderComments(comment.replies, thread, comment)}
@@ -227,10 +244,11 @@ const Threads = () => {
         {threads && threads.length > 0 ? (
           threads.map((thread) => (
             <div key={thread.id} className="thread">
-              <h1>Posted by: {thread.username}</h1>
               <h2>Title: {thread.title}</h2>
-              <p>{thread.text}</p>
-              <p>Posted: {thread.date}</p>
+              <article className="textArea">{thread.text}</article>
+              <p>
+                Posted: {thread.date} by {thread.username}
+              </p>
               <p>Likes: {thread.likes}</p>
               {thread.username === user.displayName ? (
                 <div className="actionBtns">
@@ -244,6 +262,7 @@ const Threads = () => {
                   </button>
 
                   <ThreadLikeDislike
+                    userName={thread.username}
                     threadId={thread.id}
                     initialLikes={thread.likes}
                     likedByUser={

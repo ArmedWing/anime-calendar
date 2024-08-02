@@ -30,33 +30,37 @@ const CommentLikeDislike = ({
       const threadData = threadSnap.data();
       const comments = threadData?.comments || [];
 
-      const commentIndex = comments.findIndex(
-        (comment) => comment.id === commentId
-      );
-      if (commentIndex === -1) {
-        throw new Error("Comment not found");
-      }
-
-      const comment = comments[commentIndex];
-      const updatedLikes = isLiked ? comment.likes - 1 : comment.likes + 1;
-
-      comments[commentIndex] = {
-        ...comment,
-        likes: updatedLikes,
-        likesList: isLiked
-          ? comment.likesList.filter(
-              (userName) => userName !== user.displayName
-            )
-          : [...comment.likesList, user.displayName],
+      // Function to find and update the comment or reply
+      const updateLikes = (commentsArray, targetId) => {
+        return commentsArray.map((comment) => {
+          if (comment.id === targetId) {
+            const updatedLikes = isLiked
+              ? comment.likes - 1
+              : comment.likes + 1;
+            return {
+              ...comment,
+              likes: updatedLikes,
+              likesList: isLiked
+                ? comment.likesList.filter(
+                    (userName) => userName !== user.displayName
+                  )
+                : [...comment.likesList, user.displayName],
+            };
+          } else if (comment.replies && Array.isArray(comment.replies)) {
+            return {
+              ...comment,
+              replies: updateLikes(comment.replies, targetId), // Recursive call for nested replies
+            };
+          }
+          return comment;
+        });
       };
 
-      const updateData = {
-        comments: comments,
-      };
+      const updatedComments = updateLikes(comments, commentId);
 
-      await updateDoc(threadRef, updateData);
+      await updateDoc(threadRef, { comments: updatedComments });
 
-      setLikes(updatedLikes);
+      setLikes(isLiked ? likes - 1 : likes + 1);
       setIsLiked(!isLiked);
 
       if (onUpdate) onUpdate();

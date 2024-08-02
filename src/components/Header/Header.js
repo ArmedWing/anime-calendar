@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
+import defaultImage from "../../images/default.png";
 
 const Navigation = {
   marginRight: "10px",
@@ -63,7 +64,7 @@ const Header = () => {
         <div className="user">
           <p> {user?.displayName} </p>
           <img
-            src={user?.photoURL || "/src/images/defaultImg.jpg"}
+            src={user?.photoURL || defaultImage}
             alt="Profile"
             className="profileImg"
           />

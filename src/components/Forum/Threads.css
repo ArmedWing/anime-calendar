@@ -50,7 +50,7 @@ h2 {
 }
 
 .thread p {
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 10px;
 }
 
@@ -96,4 +96,9 @@ h2 {
 
 .actionBtns {
   display: flex;
+}
+
+.textArea {
+  font-size: 17px;
+  margin: 30px 0;
 }
