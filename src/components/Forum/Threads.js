@@ -5,15 +5,10 @@ import {
   getDocs,
   doc,
   updateDoc,
-  addDoc,
   deleteDoc,
   limit,
   query,
   getDoc,
-  increment,
-  arrayUnion,
-  arrayRemove,
-  writeBatch,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -22,6 +17,11 @@ import EditThread from "../EditThread/EditThread";
 import AddComment from "../AddComment/AddComment";
 import ThreadLikeDislike from "../ThreadLikeDislike/ThreadLikeDislike";
 import CommentLikeDislike from "../CommentsLikeDislike/CommentsLikeDislike";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+// import { faComment } from "@fortawesome/free-regular-svg-icons";
 
 const Threads = () => {
   const navigate = useNavigate();
@@ -34,6 +34,8 @@ const Threads = () => {
   const [replyTo, setReplyTo] = useState(null);
   const [editComment, setEditComment] = useState(null);
   const [showComments, setShowComments] = useState(false);
+  library.add(faThumbsUp);
+  library.add(faComment);
 
   const createThread = () => {
     navigate("/create-thread");
@@ -187,7 +189,9 @@ const Threads = () => {
           <p>
             Posted: {comment.date} by {comment.user}
           </p>
-          <p>Likes: {comment.likes}</p>
+          <p>
+            <FontAwesomeIcon icon="thumbs-up" /> {comment.likes}
+          </p>
           {thread.username === user.displayName ? (
             <div className="actionBtns">
               <button onClick={() => handleComment(thread, null, comment)}>
@@ -267,10 +271,14 @@ const Threads = () => {
                 Posted: {thread.date} by {thread.username}
               </p>
               <p>
-                Likes: {thread.likes} Comments:{" "}
-                {thread.comments.length + countReplies(thread.comments)}{" "}
+                <FontAwesomeIcon icon="thumbs-up" className="icon-large" />{" "}
+                <span className="counter-large"> {thread.likes}</span>{" "}
+                <FontAwesomeIcon icon="fa-comment" className="icon-large" />{" "}
+                <span className="counter-large">
+                  {" "}
+                  {thread.comments.length + countReplies(thread.comments)}
+                </span>{" "}
               </p>
-
               {thread.username === user.displayName ? (
                 <div className="actionBtns">
                   <button onClick={() => handleEdit(thread)}>Edit</button>

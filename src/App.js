@@ -25,6 +25,7 @@ import Threads from "./components/Forum/Threads";
 import "./components/Forum/Threads.css";
 import CreateThread from "./components/CreateThread/CreateThread";
 import "./components/CreateThread/CreateThread.css";
+import "font-awesome/css/font-awesome.min.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
