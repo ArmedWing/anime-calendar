@@ -33,6 +33,7 @@ const Threads = () => {
   const [addComment, setAddComment] = useState(null);
   const [replyTo, setReplyTo] = useState(null);
   const [editComment, setEditComment] = useState(null);
+  const [showComments, setShowComments] = useState(false);
 
   const createThread = () => {
     navigate("/create-thread");
@@ -235,6 +236,22 @@ const Threads = () => {
     ));
   };
 
+  const countReplies = (comments) => {
+    let totalReplies = 0;
+
+    const countNestedReplies = (commentsArray) => {
+      for (const comment of commentsArray) {
+        if (comment.replies && Array.isArray(comment.replies)) {
+          totalReplies += comment.replies.length;
+          countNestedReplies(comment.replies);
+        }
+      }
+    };
+
+    countNestedReplies(comments);
+    return totalReplies;
+  };
+
   return (
     <div className="container">
       <button onClick={createThread}>Create Thread</button>
@@ -249,7 +266,11 @@ const Threads = () => {
               <p>
                 Posted: {thread.date} by {thread.username}
               </p>
-              <p>Likes: {thread.likes}</p>
+              <p>
+                Likes: {thread.likes} Comments:{" "}
+                {thread.comments.length + countReplies(thread.comments)}{" "}
+              </p>
+
               {thread.username === user.displayName ? (
                 <div className="actionBtns">
                   <button onClick={() => handleEdit(thread)}>Edit</button>
@@ -287,7 +308,18 @@ const Threads = () => {
                   />
                 </div>
               )}
-              {renderComments(thread.comments, thread)}
+              <button
+                onClick={() =>
+                  setShowComments((prev) => ({
+                    ...prev,
+                    [thread.id]: !prev[thread.id],
+                  }))
+                }
+              >
+                {showComments[thread.id] ? "Hide Comments" : "Show Comments"}
+              </button>
+              {showComments[thread.id] &&
+                renderComments(thread.comments, thread)}
             </div>
           ))
         ) : (
