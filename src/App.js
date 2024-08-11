@@ -26,6 +26,8 @@ import "./components/Forum/Threads.css";
 import CreateThread from "./components/CreateThread/CreateThread";
 import "./components/CreateThread/CreateThread.css";
 import "font-awesome/css/font-awesome.min.css";
+import AuthGuard from "./components/Guards/isAuthGuard";
+import AlreadyAuthenticatedGuard from "./components/Guards/isNotAuthGuard";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -58,13 +60,17 @@ function App() {
                 <Routes>
                   <Route path="/home" element={<Home />} />
                   <Route path="/search" element={<Search />} />
-                  <Route path="/signup" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/completed" element={<Completed />} />
-                  <Route path="/anime/:mal_id" element={<AnimeDetails />} />
-                  <Route path="/forum" element={<Threads />} />
-                  <Route path="/create-thread" element={<CreateThread />} />
+                  <Route element={<AlreadyAuthenticatedGuard />}>
+                    <Route path="/signup" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                  </Route>
+                  <Route element={<AuthGuard />}>
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/completed" element={<Completed />} />
+                    <Route path="/anime/:mal_id" element={<AnimeDetails />} />
+                    <Route path="/forum" element={<Threads />} />
+                    <Route path="/create-thread" element={<CreateThread />} />
+                  </Route>
                 </Routes>
               </section>
             </div>

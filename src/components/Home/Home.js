@@ -6,7 +6,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { SearchResultsContext } from "../SearchResultContext";
 
-
 const Home = () => {
   const [user] = useAuthState(auth);
   const { searchResults, setSearchResults } = useContext(SearchResultsContext);
@@ -175,13 +174,16 @@ const Home = () => {
                     <a href={anime.trailer.embed_url} className="actionBtn">
                       Watch Trailer
                     </a>
-                    <button
-                      className="actionBtn"
-                      key={anime.mal_id}
-                      onClick={() => addToCalendar(anime)}
-                    >
-                      Add to list
-                    </button>
+                    {user && (
+                      <button
+                        className="actionBtn"
+                        key={anime.mal_id}
+                        onClick={() => addToCalendar(anime)}
+                      >
+                        Add to list
+                      </button>
+                    )}
+
                     <Link
                       to={`/anime/${anime.mal_id}`}
                       state={{ anime }}

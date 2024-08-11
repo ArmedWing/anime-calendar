@@ -21,7 +21,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-// import { faComment } from "@fortawesome/free-regular-svg-icons";
 
 const Threads = () => {
   const navigate = useNavigate();
@@ -102,7 +101,7 @@ const Threads = () => {
       setUsers(usersList);
 
       let allThreads = [];
-      const maxThreads = 3; // total number of threads to fetch
+      const maxThreads = 6; // total number of threads to fetch
       let fetchedThreads = 0;
 
       for (const user of usersList) {
@@ -244,10 +243,12 @@ const Threads = () => {
     let totalReplies = 0;
 
     const countNestedReplies = (commentsArray) => {
-      for (const comment of commentsArray) {
-        if (comment.replies && Array.isArray(comment.replies)) {
-          totalReplies += comment.replies.length;
-          countNestedReplies(comment.replies);
+      if (Array.isArray(commentsArray)) {
+        for (const comment of commentsArray) {
+          if (comment.replies && Array.isArray(comment.replies)) {
+            totalReplies += comment.replies.length;
+            countNestedReplies(comment.replies);
+          }
         }
       }
     };
@@ -276,7 +277,7 @@ const Threads = () => {
                 <FontAwesomeIcon icon="fa-comment" className="icon-large" />{" "}
                 <span className="counter-large">
                   {" "}
-                  {thread.comments.length + countReplies(thread.comments)}
+                  {thread.comments?.length + countReplies(thread.comments) || 0}
                 </span>{" "}
               </p>
               {thread.username === user.displayName ? (

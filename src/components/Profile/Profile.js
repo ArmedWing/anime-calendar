@@ -26,7 +26,7 @@ const Profile = () => {
     try {
       const userRef = doc(db, "users", user.displayName);
       const animeCollectionRef = collection(userRef, "animes");
-      const limited = query(animeCollectionRef, limit(5)); // this limits to only 5 animes shown, it saves me lots of usage in firestore.
+      const limited = query(animeCollectionRef, limit(10)); // this limits to only 10 animes shown, it saves me lots of usage in firestore.
       const querySnapshot = await getDocs(limited);
       const animesList = querySnapshot.docs.map((doc) => ({
         id: doc.id,

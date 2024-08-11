@@ -96,13 +96,14 @@ const Search = () => {
               <a href={anime.trailer.embed_url} className="actionBtn">
                 Watch Trailer
               </a>
-              <button
+              {user && (<button
                 className="actionBtn"
                 key={anime.mal_id}
                 onClick={() => addToCalendar(anime.mal_id)}
               >
                 Add to list
-              </button>
+              </button>)}
+              
               <Link to={`/anime/${anime.mal_id}`} className="actionBtn">
                 View Details
               </Link>
