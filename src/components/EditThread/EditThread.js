@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import ErrorContext from "../../context/ErrorContext";
 
-const EditThread = ({ thread, onUpdate, onCancel }) => {
+const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
   const [editTitle, setEditTitle] = useState("");
   const [editText, setEditText] = useState("");
   const [user] = useAuthState(auth);
@@ -21,13 +21,14 @@ const EditThread = ({ thread, onUpdate, onCancel }) => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
     try {
       const threadRef = doc(
         db,
         "users",
         user.displayName,
         "threads",
-        thread.id
+        thread_id || thread.id
       );
       await updateDoc(threadRef, {
         title: editTitle,

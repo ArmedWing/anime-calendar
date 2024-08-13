@@ -29,6 +29,8 @@ import "font-awesome/css/font-awesome.min.css";
 import AuthGuard from "./components/Guards/isAuthGuard";
 import AlreadyAuthenticatedGuard from "./components/Guards/isNotAuthGuard";
 import { ErrorProvider } from "./context/ErrorContext";
+import ThreadDetails from "./components/ThreadDetails/ThreadDetails";
+import "./components/ThreadDetails/ThreadDetails.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -71,6 +73,11 @@ function App() {
                       <Route path="/completed" element={<Completed />} />
                       <Route path="/anime/:mal_id" element={<AnimeDetails />} />
                       <Route path="/forum" element={<Threads />} />
+                      <Route path="/threads/:username/:thread_id" element={<ThreadDetails />} />
+                      {/* <Route
+                        path="/thread/:thread_id"
+                        element={<ThreadDetails />}
+                      /> */}
                       <Route path="/create-thread" element={<CreateThread />} />
                     </Route>
                   </Routes>

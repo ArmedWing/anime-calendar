@@ -27,7 +27,6 @@ const CommentLikeDislike = ({
 
       const userRef = doc(db, "users", userName);
       const threadRef = doc(userRef, "threads", threadId);
-
       const threadSnap = await getDoc(threadRef);
       const threadData = threadSnap.data();
       const comments = threadData?.comments || [];
@@ -39,14 +38,18 @@ const CommentLikeDislike = ({
             const updatedLikes = isLiked
               ? comment.likes - 1
               : comment.likes + 1;
+
+            // Ensure likesList is initialized as an array
+            const likesList = Array.isArray(comment.likesList)
+              ? comment.likesList
+              : [];
+
             return {
               ...comment,
               likes: updatedLikes,
               likesList: isLiked
-                ? comment.likesList.filter(
-                    (userName) => userName !== user.displayName
-                  )
-                : [...comment.likesList, user.displayName],
+                ? likesList.filter((userName) => userName !== user.displayName)
+                : [...likesList, user.displayName],
             };
           } else if (comment.replies && Array.isArray(comment.replies)) {
             return {
