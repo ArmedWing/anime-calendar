@@ -19,6 +19,8 @@ const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
   const { handleError } = useContext(ErrorContext);
+  const [addAnimeCompleted, setAddAnimeCompleted] = useState("");
+  const [deletionMessage, setDeletionMessage] = useState("");
 
   const fetchAnimes = useCallback(async () => {
     if (!user) {
@@ -26,9 +28,11 @@ const Profile = () => {
     }
 
     try {
+      // throw new Error("Simulated error");
+
       const userRef = doc(db, "users", user.displayName);
       const animeCollectionRef = collection(userRef, "animes");
-      const limited = query(animeCollectionRef, limit(10)); // this limits to only 10 animes shown, it saves me lots of usage in firestore.
+      const limited = query(animeCollectionRef, limit(8)); // this limits to only 8 animes shown, it saves me lots of usage in firestore.
       const querySnapshot = await getDocs(limited);
       const animesList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -71,7 +75,11 @@ const Profile = () => {
 
       await deleteDoc(doc(usersRef, "animes", `${currentAnime.id}`));
 
-      alert("Anime completed");
+      setAddAnimeCompleted("Anime Completed");
+
+      setTimeout(() => {
+        setAddAnimeCompleted("");
+      }, 2000);
     } catch (e) {
       handleError(e.message);
     }
@@ -81,7 +89,11 @@ const Profile = () => {
     const usersRef = doc(db, "users", user.displayName);
     const currentAnime = animes.find((anime) => anime.id === key);
     await deleteDoc(doc(usersRef, "animes", `${currentAnime.id}`));
-    alert("Anime deleted");
+    setDeletionMessage("Anime deleted");
+
+    setTimeout(() => {
+      setDeletionMessage("");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -91,6 +103,13 @@ const Profile = () => {
   return (
     <div>
       <h1 className="heading">My List</h1>
+
+      {addAnimeCompleted && (
+        <div className="deletion-message">{addAnimeCompleted}</div>
+      )}
+      {deletionMessage && (
+        <div className="deletion-message">{deletionMessage}</div>
+      )}
 
       <div className="anime-card">
         {animes && animes.length > 0 ? (

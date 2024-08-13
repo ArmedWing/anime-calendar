@@ -17,13 +17,18 @@ const Completed = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
   const { handleError } = useContext(ErrorContext);
+  const [deletionMessage, setDeletionMessage] = useState("");
 
   const deleteAnime = async (key) => {
     const usersRef = doc(db, "users", user.displayName);
     const currentAnime = animes.find((anime) => anime.id === key);
     await deleteDoc(doc(usersRef, "completed", `${currentAnime.id}`));
 
-    alert("Anime deleted");
+    setDeletionMessage("Anime deleted");
+
+    setTimeout(() => {
+      setDeletionMessage("");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -55,6 +60,10 @@ const Completed = () => {
   return (
     <div>
       <h1 className="heading">Completed</h1>
+
+      {deletionMessage && (
+        <div className="deletion-message">{deletionMessage}</div>
+      )}
 
       <div className="anime-card">
         {animes && animes.length > 0 ? (

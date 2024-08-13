@@ -17,6 +17,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { handleError } = useContext(ErrorContext);
+  const [addAnime, setAddAnime] = useState("");
   const animesPerPage = 12;
 
   const getTopAnime = async (page = 1) => {
@@ -89,9 +90,6 @@ const Home = () => {
     }));
     const animeExists = animesList.some((a) => a.animeId === anime.mal_id);
 
-    console.log(animesList);
-    console.log(currentAnimes);
-
     if (!animeExists) {
       try {
         const usersRef = doc(db, "users", user.displayName);
@@ -103,11 +101,18 @@ const Home = () => {
           anime: [anime],
           episodesWatched: 0,
         });
-        alert("Anime added to list");
+        setAddAnime("Anime added to list");
+
+        setTimeout(() => {
+          setAddAnime("");
+        }, 2000);
       } catch (e) {
         handleError(e.message);
       }
-    } else alert("Anime already in list");
+    } else setAddAnime("Anime already in list");
+    setTimeout(() => {
+      setAddAnime("");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -125,6 +130,7 @@ const Home = () => {
 
   return (
     <div className="Animes">
+      {addAnime && <div className="deletion-message">{addAnime}</div>}
       <button onClick={() => getTopAnime(currentPage)} className="filter">
         Filter by Rating
       </button>

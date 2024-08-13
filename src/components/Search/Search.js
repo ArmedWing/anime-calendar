@@ -15,6 +15,7 @@ const Search = () => {
   const { searchResults, setSearchResults } = useContext(SearchResultsContext);
   const [animes, setAnimes] = useState([]);
   const { handleError } = useContext(ErrorContext);
+  const [addAnime, setAddAnime] = useState("");
 
   const addToCalendar = async (key) => {
     const currentAnime = searchResults.filter((anime) => anime.mal_id === key);
@@ -43,11 +44,19 @@ const Search = () => {
           anime: currentAnime,
           episodesWatched: 0,
         });
-        alert("Anime added to list");
+        setAddAnime("Anime added to list");
+
+        setTimeout(() => {
+          setAddAnime("");
+        }, 2000);
       } catch (e) {
         handleError(e.message);
       }
-    } else alert("Anime already in list");
+    } else setAddAnime("Anime already in list");
+
+    setTimeout(() => {
+      setAddAnime("");
+    }, 2000);
   };
 
   const handleSearch = (event) => {
@@ -78,6 +87,7 @@ const Search = () => {
       </div>
 
       <div className="anime-list">
+        {addAnime && <div className="deletion-message">{addAnime}</div>}
         {searchResults.map((anime) => (
           <div key={anime.mal_id} className="anime">
             {" "}

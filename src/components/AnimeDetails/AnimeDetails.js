@@ -22,6 +22,7 @@ const AnimeDetails = () => {
   }, [mal_id, anime]);
 
   const fetchAnimeDetails = async (mal_id) => {
+    // throw new Error("Simulated error");
     try {
       const user = auth.currentUser;
       if (!user) return;

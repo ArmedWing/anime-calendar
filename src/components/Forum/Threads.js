@@ -35,6 +35,7 @@ const Threads = () => {
   const [editComment, setEditComment] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const { handleError } = useContext(ErrorContext);
+  const [deletionMessage, setDeletionMessage] = useState("");
   library.add(faThumbsUp);
   library.add(faComment);
 
@@ -74,10 +75,8 @@ const Threads = () => {
       comments = removeCommentOrReply(comments, commentId);
 
       await updateDoc(threadRef, { comments });
-
-      console.log("Comment/reply deleted successfully");
     } catch (error) {
-      handleError(e.message);
+      handleError(error.message);
     }
   };
 
@@ -85,12 +84,14 @@ const Threads = () => {
     const usersRef = doc(db, "users", user.displayName);
     const currentThread = threads.find((thread) => thread.id === key);
     await deleteDoc(doc(usersRef, "threads", `${currentThread.id}`));
-
-    alert("Thread deleted");
-    console.log(currentThread);
+    setDeletionMessage("Thread deleted");
+    setTimeout(() => {
+      setDeletionMessage("");
+    }, 2000);
   };
 
   const fetchThreads = useCallback(async () => {
+    // throw new Error("Simulated error");
     try {
       const usersCollectionRef = collection(db, "users");
       const usersSnapshot = await getDocs(usersCollectionRef);
@@ -261,6 +262,10 @@ const Threads = () => {
     <div className="container">
       <button onClick={createThread}>Create Thread</button>
       <h1 className="page-title">All Threads</h1>
+
+      {deletionMessage && (
+        <div className="deletion-message">{deletionMessage}</div>
+      )}
 
       <div className="threads">
         {threads && threads.length > 0 ? (

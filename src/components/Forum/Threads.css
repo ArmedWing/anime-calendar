@@ -110,3 +110,15 @@ h2 {
 .counter-large {
   font-size: 14px;
 }
+
+.deletion-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  z-index: 1000;
+}
