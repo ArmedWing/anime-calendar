@@ -240,6 +240,7 @@ const ThreadDetails = () => {
       {deletionMessage && (
         <div className="deletion-message">{deletionMessage}</div>
       )}
+      <button onClick={() => navigate("/forum")}>Back</button>
       {thread ? (
         <>
           <h1>{thread.title}</h1>
