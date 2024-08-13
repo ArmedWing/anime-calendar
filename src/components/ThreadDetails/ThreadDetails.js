@@ -1,13 +1,6 @@
 import { useEffect, useState, useCallback, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  deleteDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
@@ -82,67 +75,6 @@ const ThreadDetails = () => {
       setTimeout(() => {
         setDeletionMessage("");
       }, 2000);
-    } catch (error) {
-      handleError(error.message);
-    }
-  };
-
-  const handleLikeThread = async () => {
-    if (!user || !user.displayName) return;
-
-    try {
-      const threadRef = doc(db, "users", username, "threads", thread_id);
-      const threadSnap = await getDoc(threadRef);
-      const threadData = threadSnap.data() || {};
-
-      const userAlreadyLiked = threadData.likesList?.includes(user.displayName);
-      const newLikesList = userAlreadyLiked
-        ? threadData.likesList.filter(
-            (userName) => userName !== user.displayName
-          )
-        : [...(threadData.likesList || []), user.displayName];
-
-      await updateDoc(threadRef, {
-        likes: newLikesList.length,
-        likesList: newLikesList,
-      });
-
-      setThread((prev) => ({
-        ...prev,
-        likes: newLikesList.length,
-        likesList: newLikesList,
-      }));
-    } catch (error) {
-      handleError(error.message);
-    }
-  };
-
-  const handleLikeComment = async (commentId) => {
-    if (!user || !user.displayName) return;
-
-    try {
-      const threadRef = doc(db, "users", username, "threads", thread_id);
-      const threadSnap = await getDoc(threadRef);
-      const threadData = threadSnap.data() || {};
-      const comment = threadData.comments.find(
-        (comment) => comment.id === commentId
-      );
-
-      if (!comment) return;
-
-      const userAlreadyLiked = comment.likesList?.includes(user.displayName);
-      const newLikesList = userAlreadyLiked
-        ? comment.likesList.filter((userName) => userName !== user.displayName)
-        : [...(comment.likesList || []), user.displayName];
-
-      const updatedComments = threadData.comments.map((c) =>
-        c.id === commentId
-          ? { ...c, likes: newLikesList.length, likesList: newLikesList }
-          : c
-      );
-
-      await updateDoc(threadRef, { comments: updatedComments });
-      setComments(updatedComments);
     } catch (error) {
       handleError(error.message);
     }
@@ -274,7 +206,7 @@ const ThreadDetails = () => {
               <button onClick={() => setReplyTo(comment)}>Reply</button>
               <CommentLikeDislike
                 userName={thread.username}
-                threadId={thread.id}
+                threadId={thread_id}
                 commentId={comment.id}
                 initialLikes={comment.likes}
                 likedByUser={

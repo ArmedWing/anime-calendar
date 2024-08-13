@@ -35,14 +35,14 @@ const CommentLikeDislike = ({
       const updateLikes = (commentsArray, targetId) => {
         return commentsArray.map((comment) => {
           if (comment.id === targetId) {
-            const updatedLikes = isLiked
-              ? comment.likes - 1
-              : comment.likes + 1;
-
             // Ensure likesList is initialized as an array
             const likesList = Array.isArray(comment.likesList)
               ? comment.likesList
               : [];
+
+            const updatedLikes = isLiked
+              ? comment.likes - 1
+              : comment.likes + 1;
 
             return {
               ...comment,
@@ -54,7 +54,7 @@ const CommentLikeDislike = ({
           } else if (comment.replies && Array.isArray(comment.replies)) {
             return {
               ...comment,
-              replies: updateLikes(comment.replies, targetId), // Recursive call for nested replies
+              replies: updateLikes(comment.replies, targetId),
             };
           }
           return comment;
