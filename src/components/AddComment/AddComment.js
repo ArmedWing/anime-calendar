@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useId } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
+import ErrorContext from "../../context/ErrorContext";
 
 const AddComment = ({
   thread,
@@ -15,6 +16,7 @@ const AddComment = ({
   const [user] = useAuthState(auth);
   const [addComment, setAddComment] = useState("");
   const [currentDate, setCurrentDate] = useState("");
+  const { handleError } = useContext(ErrorContext);
   const commentId = useId();
 
   useEffect(() => {
@@ -31,13 +33,7 @@ const AddComment = ({
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const threadRef = doc(
-        db,
-        "users",
-        thread.username,
-        "threads",
-        thread.id
-      );
+      const threadRef = doc(db, "users", thread.username, "threads", thread.id);
 
       if (commentToEdit) {
         const updatedComments = updateComment(
@@ -72,7 +68,7 @@ const AddComment = ({
 
       onUpdate();
     } catch (error) {
-      alert("Error updating document: " + error.message);
+      handleError(error.message);
     }
   };
 

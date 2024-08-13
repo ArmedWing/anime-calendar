@@ -4,7 +4,8 @@ import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { SearchResultsContext } from "../SearchResultContext";
+import { SearchResultsContext } from "../../context/SearchResultContext";
+import ErrorContext from "../../context/ErrorContext";
 
 const Home = () => {
   const [user] = useAuthState(auth);
@@ -15,6 +16,7 @@ const Home = () => {
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { handleError } = useContext(ErrorContext);
   const animesPerPage = 12;
 
   const getTopAnime = async (page = 1) => {
@@ -29,7 +31,7 @@ const Home = () => {
       setTotalPages(data.pagination.last_visible_page || 1);
       setSelectedGenre(null);
     } catch (error) {
-      console.error("Failed to fetch top animes:", error);
+      handleError(error.message);
       setAnimes([]);
     }
   };
@@ -44,7 +46,7 @@ const Home = () => {
       setCurrentPage(data.pagination.current_page || 1);
       setTotalPages(data.pagination.last_visible_page || 1);
     } catch (error) {
-      console.error("Failed to fetch animes by genre:", error);
+      handleError(error.message);
       setAnimes([]);
     }
   };
@@ -73,7 +75,7 @@ const Home = () => {
       const data = await response.json();
       setFilterByGenre(data.data || []);
     } catch (error) {
-      console.error("Failed to fetch genres:", error);
+      handleError(error.message);
       setFilterByGenre([]);
     }
   };
@@ -103,7 +105,7 @@ const Home = () => {
         });
         alert("Anime added to list");
       } catch (e) {
-        alert("Error", e.message);
+        handleError(e.message);
       }
     } else alert("Anime already in list");
   };

@@ -1,18 +1,12 @@
-import React, { useEffect, useContext, useState } from "react";
-import {
-  addDoc,
-  doc,
-  setDoc,
-  collection,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import React, { useContext, useState } from "react";
+import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import SearchContext from "../../context/search";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
-import { SearchResultsContext } from "../SearchResultContext";
+import { SearchResultsContext } from "../../context/SearchResultContext";
+import ErrorContext from "../../context/ErrorContext";
 
 const Search = () => {
   const [user] = useAuthState(auth);
@@ -20,6 +14,7 @@ const Search = () => {
   const [input, setInput] = useState("");
   const { searchResults, setSearchResults } = useContext(SearchResultsContext);
   const [animes, setAnimes] = useState([]);
+  const { handleError } = useContext(ErrorContext);
 
   const addToCalendar = async (key) => {
     const currentAnime = searchResults.filter((anime) => anime.mal_id === key);
@@ -50,7 +45,7 @@ const Search = () => {
         });
         alert("Anime added to list");
       } catch (e) {
-        alert("Error", e.message);
+        handleError(e.message);
       }
     } else alert("Anime already in list");
   };
@@ -96,14 +91,16 @@ const Search = () => {
               <a href={anime.trailer.embed_url} className="actionBtn">
                 Watch Trailer
               </a>
-              {user && (<button
-                className="actionBtn"
-                key={anime.mal_id}
-                onClick={() => addToCalendar(anime.mal_id)}
-              >
-                Add to list
-              </button>)}
-              
+              {user && (
+                <button
+                  className="actionBtn"
+                  key={anime.mal_id}
+                  onClick={() => addToCalendar(anime.mal_id)}
+                >
+                  Add to list
+                </button>
+              )}
+
               <Link to={`/anime/${anime.mal_id}`} className="actionBtn">
                 View Details
               </Link>

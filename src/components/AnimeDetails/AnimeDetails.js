@@ -1,18 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  doc,
-  getDoc,
-  collection,
-  where,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { doc, collection, where, query, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { SearchResultsContext } from "../SearchResultContext";
-import { HomePageContext } from "../HomePageContext";
+import { SearchResultsContext } from "../../context/SearchResultContext";
+import { HomePageContext } from "../../context/HomePageContext";
+import ErrorContext from "../../context/ErrorContext";
 
 const AnimeDetails = () => {
   const { mal_id } = useParams();
@@ -20,6 +13,7 @@ const AnimeDetails = () => {
   const { searchResults } = useContext(SearchResultsContext);
   const [anime, setAnime] = useState(location.state?.anime || null);
   const { homePageResults } = useContext(HomePageContext);
+  const { handleError } = useContext(ErrorContext);
 
   useEffect(() => {
     if (!anime) {
@@ -68,7 +62,7 @@ const AnimeDetails = () => {
         }
       }
     } catch (error) {
-      console.error("Error fetching anime details:", error);
+      handleError(error.message);
     }
   };
 

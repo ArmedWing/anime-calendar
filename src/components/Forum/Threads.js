@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   collection,
@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
+import ErrorContext from "../../context/ErrorContext";
 
 const Threads = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Threads = () => {
   const [replyTo, setReplyTo] = useState(null);
   const [editComment, setEditComment] = useState(null);
   const [showComments, setShowComments] = useState(false);
+  const { handleError } = useContext(ErrorContext);
   library.add(faThumbsUp);
   library.add(faComment);
 
@@ -75,9 +77,7 @@ const Threads = () => {
 
       console.log("Comment/reply deleted successfully");
     } catch (error) {
-      console.error("Error deleting comment/reply: ", error);
-      console.log(thread);
-      alert("Error deleting comment/reply: " + error.message);
+      handleError(e.message);
     }
   };
 
@@ -128,7 +128,7 @@ const Threads = () => {
 
       setThreads(allThreads.slice(0, maxThreads));
     } catch (e) {
-      alert("Error fetching documents: " + e.message);
+      handleError(e.message);
     }
   }, [threads]);
 

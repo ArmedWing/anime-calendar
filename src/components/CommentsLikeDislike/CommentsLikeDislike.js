@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
+import ErrorContext from "../../context/ErrorContext";
 
 const CommentLikeDislike = ({
   threadId,
@@ -13,6 +14,7 @@ const CommentLikeDislike = ({
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [likes, setLikes] = useState(initialLikes);
+  const { handleError } = useContext(ErrorContext);
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const CommentLikeDislike = ({
 
       if (onUpdate) onUpdate();
     } catch (error) {
-      console.error("Error updating comment likes: ", error);
+      handleError(error.message);
     }
   };
 

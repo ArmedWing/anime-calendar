@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { addDoc, doc, collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import ErrorContext from "../../context/ErrorContext";
 
 const CreateThread = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const CreateThread = () => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [currentDate, setCurrentDate] = useState("");
+  const { handleError } = useContext(ErrorContext);
 
   useEffect(() => {
     const today = new Date().toString().slice(0, 21);
@@ -31,7 +33,7 @@ const CreateThread = () => {
         likes: 0,
       });
     } catch (error) {
-      alert(error);
+      handleError(error.message);
     }
     setTitle();
     setText();

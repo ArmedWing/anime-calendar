@@ -13,10 +13,10 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
 import AnimeDetails from "./components/AnimeDetails/AnimeDetails";
 import "./components/AnimeDetails/AnimeDetails.css";
-import { SearchResultsProvider } from "./components/SearchResultContext";
+import { SearchResultsProvider } from "./context/SearchResultContext";
 import Home from "./components/Home/Home";
 import "./components/Home/Home.css";
-import { HomePageProvider } from "./components/HomePageContext";
+import { HomePageProvider } from "./context/HomePageContext";
 import "./components/Login/Login.css";
 import "./components/Register/Register.css";
 import Completed from "./components/FinishedWatching/Completed";
@@ -28,6 +28,7 @@ import "./components/CreateThread/CreateThread.css";
 import "font-awesome/css/font-awesome.min.css";
 import AuthGuard from "./components/Guards/isAuthGuard";
 import AlreadyAuthenticatedGuard from "./components/Guards/isNotAuthGuard";
+import { ErrorProvider } from "./context/ErrorContext";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -48,36 +49,38 @@ function App() {
   };
 
   return (
-    <HomePageProvider>
-      <SearchResultsProvider>
-        <Router>
-          <SearchContext.Provider
-            value={{ search, animeData, setData, singleData, setSingle }}
-          >
-            <div className="App">
-              <Header />
-              <section>
-                <Routes>
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route element={<AlreadyAuthenticatedGuard />}>
-                    <Route path="/signup" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
-                  </Route>
-                  <Route element={<AuthGuard />}>
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/completed" element={<Completed />} />
-                    <Route path="/anime/:mal_id" element={<AnimeDetails />} />
-                    <Route path="/forum" element={<Threads />} />
-                    <Route path="/create-thread" element={<CreateThread />} />
-                  </Route>
-                </Routes>
-              </section>
-            </div>
-          </SearchContext.Provider>
-        </Router>
-      </SearchResultsProvider>
-    </HomePageProvider>
+    <ErrorProvider>
+      <HomePageProvider>
+        <SearchResultsProvider>
+          <Router>
+            <SearchContext.Provider
+              value={{ search, animeData, setData, singleData, setSingle }}
+            >
+              <div className="App">
+                <Header />
+                <section>
+                  <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route element={<AlreadyAuthenticatedGuard />}>
+                      <Route path="/signup" element={<Register />} />
+                      <Route path="/login" element={<Login />} />
+                    </Route>
+                    <Route element={<AuthGuard />}>
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/completed" element={<Completed />} />
+                      <Route path="/anime/:mal_id" element={<AnimeDetails />} />
+                      <Route path="/forum" element={<Threads />} />
+                      <Route path="/create-thread" element={<CreateThread />} />
+                    </Route>
+                  </Routes>
+                </section>
+              </div>
+            </SearchContext.Provider>
+          </Router>
+        </SearchResultsProvider>
+      </HomePageProvider>
+    </ErrorProvider>
   );
 }
 

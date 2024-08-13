@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import "./EditThread.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
+import ErrorContext from "../../context/ErrorContext";
 
 const EditThread = ({ thread, onUpdate, onCancel }) => {
   const [editTitle, setEditTitle] = useState("");
   const [editText, setEditText] = useState("");
   const [user] = useAuthState(auth);
+  const { handleError } = useContext(ErrorContext);
 
   useEffect(() => {
     if (thread) {
@@ -33,8 +35,7 @@ const EditThread = ({ thread, onUpdate, onCancel }) => {
       });
       onUpdate();
     } catch (error) {
-      alert("Error updating document: " + error.message);
-      
+      handleError(error.message);
     }
   };
 

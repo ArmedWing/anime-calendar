@@ -17,13 +17,12 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      // Ensure displayName is set
+     
       if (user.displayName) {
-        // Check if user exists in Firestore
+       
         const userDocRef = doc(db, "users", user.displayName);
         const userDoc = await getDoc(userDocRef);
 
-        // If user doesn't exist, add them to Firestore
         if (!userDoc.exists()) {
           await setDoc(userDocRef, {});
         }

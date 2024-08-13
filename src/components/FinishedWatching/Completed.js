@@ -4,18 +4,19 @@ import {
   collection,
   getDocs,
   doc,
-  updateDoc,
   deleteDoc,
   limit,
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import ErrorContext from "../../context/ErrorContext";
 
 const Completed = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
+  const { handleError } = useContext(ErrorContext);
 
   const deleteAnime = async (key) => {
     const usersRef = doc(db, "users", user.displayName);
@@ -34,7 +35,7 @@ const Completed = () => {
       try {
         const userRef = doc(db, "users", user.displayName);
         const animeCollectionRef = collection(userRef, "completed");
-        const limited = query(animeCollectionRef, limit(10)); // this limits to only 10 animes shown, it saves me lots of usage in firestore.
+        const limited = query(animeCollectionRef, limit(8)); // this limits to only 8 animes shown, it saves me lots of usage in firestore.
         const querySnapshot = await getDocs(limited);
 
         const animesList = querySnapshot.docs.map((doc) => ({
@@ -44,7 +45,7 @@ const Completed = () => {
 
         setAnimes(animesList);
       } catch (e) {
-        console.error("Error fetching documents: ", e.message);
+        handleError(e.message);
       }
     };
 

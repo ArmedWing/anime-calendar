@@ -11,12 +11,14 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
+import ErrorContext from "../../context/ErrorContext";
 
 const Profile = () => {
   const [user] = useAuthState(auth);
   const [animes, setAnimes] = useState([]);
+  const { handleError } = useContext(ErrorContext);
 
   const fetchAnimes = useCallback(async () => {
     if (!user) {
@@ -35,7 +37,7 @@ const Profile = () => {
 
       setAnimes(animesList);
     } catch (e) {
-      alert("Error fetching documents: ", e.message);
+      handleError(e.message);
     }
   }, [animes]);
 
@@ -52,7 +54,7 @@ const Profile = () => {
         )
       );
     } catch (error) {
-      alert("Error updating episodes watched:", error);
+      handleError(error.message);
     }
   };
 
@@ -71,7 +73,7 @@ const Profile = () => {
 
       alert("Anime completed");
     } catch (e) {
-      alert("Error", e.message);
+      handleError(e.message);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   doc,
   updateDoc,
@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
+import ErrorContext from "../../context/ErrorContext";
 
 const ThreadLikeDislike = ({
   threadId,
@@ -18,6 +19,7 @@ const ThreadLikeDislike = ({
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [likes, setLikes] = useState(initialLikes);
+  const { handleError } = useContext(ErrorContext);
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const ThreadLikeDislike = ({
       setIsLiked(!isLiked);
       onUpdate();
     } catch (error) {
-      console.error("Error updating thread likes: ", error);
+      handleError(error.message);
     }
   };
 
