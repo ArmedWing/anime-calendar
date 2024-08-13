@@ -7,6 +7,7 @@ import { SearchResultsContext } from "../../context/SearchResultContext";
 import { HomePageContext } from "../../context/HomePageContext";
 import ErrorContext from "../../context/ErrorContext";
 
+
 const AnimeDetails = () => {
   const { mal_id } = useParams();
   const location = useLocation();
@@ -14,6 +15,7 @@ const AnimeDetails = () => {
   const [anime, setAnime] = useState(location.state?.anime || null);
   const { homePageResults } = useContext(HomePageContext);
   const { handleError } = useContext(ErrorContext);
+ 
 
   useEffect(() => {
     if (!anime) {
@@ -72,64 +74,66 @@ const AnimeDetails = () => {
   }
 
   return (
-    <div className="details-container">
-      <div className="leftSection">
-        <h1>{anime.title}</h1>
-        <img src={anime.images.jpg.large_image_url} className="animeImg" />
-        <a href={anime.trailer.embed_url}>Watch Trailer</a>
-        <a href={anime.url}>My Anime List</a>
-      </div>
-      <div className="rightSection">
-        <p style={{ color: "black" }}>Story:</p>
-        <p>
-          {anime.synopsis && anime.synopsis.length > 10
-            ? anime.synopsis.slice(0, -25)
-            : anime.synopsis}
-        </p>
-        <p>
-          <span style={{ color: "black" }}>Status:</span> {anime.status}
-        </p>
-        <div className="groupText">
-          <p>
-            <span style={{ color: "black" }}>Aired:</span>{" "}
-            {anime.aired.from.split("-")[0]}
-          </p>
+    <div>
+      <div className="details-container">
+        <div className="leftSection">
+          <h1>{anime.title}</h1>
+          <img src={anime.images.jpg.large_image_url} className="animeImg" />
+          <a href={anime.trailer.embed_url}>Watch Trailer</a>
+          <a href={anime.url}>My Anime List</a>
         </div>
-        <div className="groupText">
+        <div className="rightSection">
+          <p style={{ color: "black" }}>Story:</p>
           <p>
-            <span style={{ color: "black" }}>Ended:</span>{" "}
-            {anime.aired.to?.split("-")[0]}
+            {anime.synopsis && anime.synopsis.length > 10
+              ? anime.synopsis.slice(0, -25)
+              : anime.synopsis}
           </p>
-        </div>
-        <div className="groupText">
           <p>
-            <span style={{ color: "black" }}>Broadcast:</span>{" "}
-            {anime.broadcast?.string}
+            <span style={{ color: "black" }}>Status:</span> {anime.status}
           </p>
-        </div>
-        <div className="groupText">
-          <p>
-            <span style={{ color: "black" }}>Studio name:</span>{" "}
-            {anime.studios[0].name}
-          </p>
-        </div>
-        <div className="groupText">
-          <p>
-            <span style={{ color: "black" }}>Score:</span> {anime.score}
-          </p>
-        </div>
-        <div className="groupText">
-          <p>
-            <span style={{ color: "black" }}>Genre:</span>{" "}
-            {anime.genres[0].name}
-          </p>
-          {/* <div>
-              {animeDetails.genres && animeDetails.genres.length > 0 ? (
-                animeDetails.genres.map((genre) => <p>{genre.name}</p>)
-              ) : (
-                <p>No genres available</p>
-              )}
-            </div> */}
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Aired:</span>{" "}
+              {anime.aired.from.split("-")[0]}
+            </p>
+          </div>
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Ended:</span>{" "}
+              {anime.aired.to?.split("-")[0]}
+            </p>
+          </div>
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Broadcast:</span>{" "}
+              {anime.broadcast?.string}
+            </p>
+          </div>
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Studio name:</span>{" "}
+              {anime.studios[0].name}
+            </p>
+          </div>
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Score:</span> {anime.score}
+            </p>
+          </div>
+          <div className="groupText">
+            <p>
+              <span style={{ color: "black" }}>Genre:</span>{" "}
+              {anime.genres[0].name}
+            </p>
+            {/* <div>
+                {animeDetails.genres && animeDetails.genres.length > 0 ? (
+                  animeDetails.genres.map((genre) => <p>{genre.name}</p>)
+                ) : (
+                  <p>No genres available</p>
+                )}
+              </div> */}
+          </div>
         </div>
       </div>
     </div>

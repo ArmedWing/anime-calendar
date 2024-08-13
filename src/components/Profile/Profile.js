@@ -14,6 +14,7 @@ import { db } from "../../firebase";
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import ErrorContext from "../../context/ErrorContext";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user] = useAuthState(auth);
@@ -21,6 +22,7 @@ const Profile = () => {
   const { handleError } = useContext(ErrorContext);
   const [addAnimeCompleted, setAddAnimeCompleted] = useState("");
   const [deletionMessage, setDeletionMessage] = useState("");
+  const navigate = useNavigate();
 
   const fetchAnimes = useCallback(async () => {
     if (!user) {
@@ -103,7 +105,7 @@ const Profile = () => {
   return (
     <div>
       <h1 className="heading">My List</h1>
-
+      <button onClick={() => navigate("/home")}>Back</button>
       {addAnimeCompleted && (
         <div className="deletion-message">{addAnimeCompleted}</div>
       )}
