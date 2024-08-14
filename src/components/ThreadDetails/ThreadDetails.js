@@ -39,7 +39,7 @@ const ThreadDetails = () => {
         setThread(threadSnap.data());
         setComments(threadSnap.data().comments || []);
       } else {
-        console.error("Thread not found!");
+        navigate("/404", { replace: true });
       }
     } catch (error) {
       handleError(error.message);
@@ -240,46 +240,52 @@ const ThreadDetails = () => {
       {deletionMessage && (
         <div className="deletion-message">{deletionMessage}</div>
       )}
-      <button onClick={() => navigate("/forum")}>Back</button>
+      <button onClick={() => navigate("/forum")} className="back-Btn">Back</button>
       {thread ? (
         <>
           <h1>{thread.title}</h1>
           <p>{thread.text}</p>
-          <p>
-            Posted: {thread.date} by {thread.username}
-          </p>
-          <p>
-            <FontAwesomeIcon icon="thumbs-up" className="icon-large" />
-            <span className="counter-large"> {thread.likes}</span>
-            <FontAwesomeIcon icon="fa-comment" className="icon-large" />
-            <span className="counter-large">
-              {thread.comments?.length +
-                thread.comments?.reduce(
-                  (acc, comment) => acc + (comment.replies?.length || 0),
-                  0
-                ) || 0}
-            </span>
-          </p>
-          <ThreadLikeDislike
-            userName={thread.username}
-            threadId={thread_id}
-            initialLikes={thread.likes}
-            likedByUser={thread.likesList?.includes(user.displayName) || false}
-            onUpdate={fetchThread}
-          />
-          {thread.username === user.displayName && (
-            <div>
-              <button thread={thread_id} onClick={() => handleEdit(thread)}>
-                Edit
-              </button>
-              <button onClick={() => DeleteThread(thread_id)}>Delete</button>
+          <div className="thread-info">
+            <p>
+              Posted: {thread.date} by {thread.username}
+            </p>
+            <div className="like-comment-info">
+              <FontAwesomeIcon icon="thumbs-up" className="icon-large" />
+              <span className="counter-large"> {thread.likes}</span>
+              <FontAwesomeIcon icon="fa-comment" className="icon-large" />
+              <span className="counter-large">
+                {thread.comments?.length +
+                  thread.comments?.reduce(
+                    (acc, comment) => acc + (comment.replies?.length || 0),
+                    0
+                  ) || 0}
+              </span>
             </div>
-          )}
+          </div>
+          <div className="thread-actions">
+            <ThreadLikeDislike
+              userName={thread.username}
+              threadId={thread_id}
+              initialLikes={thread.likes}
+              likedByUser={
+                thread.likesList?.includes(user.displayName) || false
+              }
+              onUpdate={fetchThread}
+            />
+            {thread.username === user.displayName && (
+              <div>
+                <button thread={thread_id} onClick={() => handleEdit(thread)}>
+                  Edit
+                </button>
+                <button onClick={() => DeleteThread(thread_id)}>Delete</button>
+              </div>
+            )}
+          </div>
           <button onClick={() => setShowComments((prev) => !prev)}>
             {showComments ? "Hide Comments" : "Show Comments"}
           </button>
           {showComments && renderComments(comments, thread)}
-          <div>
+          <div className="add-comment">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}

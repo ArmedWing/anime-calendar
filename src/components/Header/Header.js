@@ -62,12 +62,14 @@ const Header = () => {
 
       {user && (
         <div className="user">
-          <p> {user?.displayName} </p>
-          <img
-            src={user?.photoURL || defaultImage}
-            alt="Profile"
-            className="profileImg"
-          />
+          <div className="profile-name-img">
+            <p> {user?.displayName} </p>
+            <img
+              src={user?.photoURL || defaultImage}
+              alt="Profile"
+              className="profileImg"
+            />
+          </div>
           <button onClick={signUserOut}> Log Out </button>
         </div>
       )}

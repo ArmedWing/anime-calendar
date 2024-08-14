@@ -10,3 +10,98 @@
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.comment-container {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.comment {
+  margin-bottom: 10px;
+}
+
+.comment .textArea {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.comment-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-actions p {
+  margin: 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.thread-info {
+  margin-top: 20px;
+}
+
+.like-comment-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.thread-actions {
+  margin-top: 10px;
+  display: flex;
+}
+
+.thread-actions button {
+  margin-right: 10px;
+}
+
+.add-comment {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.add-comment textarea {
+  width: 97%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.add-comment-btn {
+  align-self: flex-end;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-comment-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-reply-btn {
+  margin-top: 10px;
+  background-color: transparent;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.cancel-reply-btn:hover {
+  color: #0056b3;
+}

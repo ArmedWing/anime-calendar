@@ -9,7 +9,7 @@ import "./components/Search/Search.css";
 import React, { useState } from "react";
 import SearchContext from "./context/search";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
 import AnimeDetails from "./components/AnimeDetails/AnimeDetails";
 import "./components/AnimeDetails/AnimeDetails.css";
@@ -31,6 +31,8 @@ import AlreadyAuthenticatedGuard from "./components/Guards/isNotAuthGuard";
 import { ErrorProvider } from "./context/ErrorContext";
 import ThreadDetails from "./components/ThreadDetails/ThreadDetails";
 import "./components/ThreadDetails/ThreadDetails.css";
+import NotFound from "./components/404page/404Page";
+import "./components/404page/404page.css";
 
 function App() {
   const [animeData, setAnimeData] = useState([]);
@@ -73,13 +75,13 @@ function App() {
                       <Route path="/completed" element={<Completed />} />
                       <Route path="/anime/:mal_id" element={<AnimeDetails />} />
                       <Route path="/forum" element={<Threads />} />
-                      <Route path="/threads/:username/:thread_id" element={<ThreadDetails />} />
-                      {/* <Route
-                        path="/thread/:thread_id"
+                      <Route
+                        path="/threads/:username/:thread_id"
                         element={<ThreadDetails />}
-                      /> */}
+                      />
                       <Route path="/create-thread" element={<CreateThread />} />
                     </Route>
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </section>
               </div>

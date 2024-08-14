@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { doc, collection, where, query, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { auth } from "../../firebase";
@@ -7,15 +7,14 @@ import { SearchResultsContext } from "../../context/SearchResultContext";
 import { HomePageContext } from "../../context/HomePageContext";
 import ErrorContext from "../../context/ErrorContext";
 
-
 const AnimeDetails = () => {
   const { mal_id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { searchResults } = useContext(SearchResultsContext);
   const [anime, setAnime] = useState(location.state?.anime || null);
   const { homePageResults } = useContext(HomePageContext);
   const { handleError } = useContext(ErrorContext);
- 
 
   useEffect(() => {
     if (!anime) {
@@ -61,6 +60,8 @@ const AnimeDetails = () => {
           );
           if (animeHomePage) {
             setAnime(animeHomePage);
+          } else {
+            navigate("/404", { replace: true }); // This will replace the current URL in the history stack with the 404 URL, so if the user presses "back", they won't return to the invalid URL.
           }
         }
       }
@@ -70,7 +71,7 @@ const AnimeDetails = () => {
   };
 
   if (!anime) {
-    return <div className="noAnimes">No Anime Details</div>;
+    return null;
   }
 
   return (
@@ -126,13 +127,6 @@ const AnimeDetails = () => {
               <span style={{ color: "black" }}>Genre:</span>{" "}
               {anime.genres[0].name}
             </p>
-            {/* <div>
-                {animeDetails.genres && animeDetails.genres.length > 0 ? (
-                  animeDetails.genres.map((genre) => <p>{genre.name}</p>)
-                ) : (
-                  <p>No genres available</p>
-                )}
-              </div> */}
           </div>
         </div>
       </div>
