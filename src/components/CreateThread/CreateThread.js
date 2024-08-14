@@ -68,7 +68,7 @@ const CreateThread = () => {
         <button type="submit" className="createThreadBtn">
           CREATE THREAD
         </button>
-        <button type="button" onClick={handleCancel}>
+        <button type="button" onClick={handleCancel} className="cancelBtn">
           Cancel
         </button>
       </form>

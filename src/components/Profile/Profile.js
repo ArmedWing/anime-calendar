@@ -119,10 +119,10 @@ const Profile = () => {
             <div key={anime.id} className="card">
               {anime.anime && anime.anime[0] ? (
                 <>
-                  <h2>{anime.anime[0].title}</h2>
+                  <h2 className="animeTitle">{anime.anime[0].title}</h2>
                   <img
                     src={anime.anime[0].images.jpg.image_url}
-                    className="animeImg"
+                    className="animeImgProfile"
                     alt={anime.anime[0].title}
                   />
                   <div className="cardText">

@@ -16,10 +16,6 @@ button {
   font-size: 16px;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
 h1,
 h2 {
   color: #333;
@@ -64,11 +60,16 @@ h2 {
   cursor: pointer;
 }
 
+.thread a {
+  text-decoration: none;
+  color: black;
+}
+
 .thread button:hover {
   background-color: #218838;
 }
 .page-title {
-  color: white;
+  color: black;
 }
 
 .comment-container {
@@ -101,6 +102,7 @@ h2 {
 .textArea {
   font-size: 17px;
   margin: 30px 0;
+  height: auto;
 }
 
 .icon-large {
@@ -121,4 +123,8 @@ h2 {
   padding: 10px;
   text-align: center;
   z-index: 1000;
+}
+
+.cancelBtn {
+  background-color: red;
 }
