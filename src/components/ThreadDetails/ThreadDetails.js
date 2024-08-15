@@ -188,6 +188,18 @@ const ThreadDetails = () => {
     setReplyTo(comment);
   };
 
+  const countReplies = (comments) => {
+    return comments.reduce((acc, comment) => {
+      const repliesCount = comment.replies ? countReplies(comment.replies) : 0;
+      return acc + 1 + repliesCount;
+    }, 0);
+  };
+
+  const totalCommentsAndReplies = (thread) => {
+    const commentsCount = thread.comments ? countReplies(thread.comments) : 0;
+    return thread.comments ? commentsCount : 0;
+  };
+
   const renderComments = (comments, thread, replyTo = null) => {
     if (!comments) return null;
 
@@ -202,9 +214,13 @@ const ThreadDetails = () => {
           <p>
             Posted: {comment.date} by {comment.user}
           </p>
-          <p>
+          <div>
             <FontAwesomeIcon icon="thumbs-up" /> {comment.likes}
-          </p>
+            <FontAwesomeIcon icon="comment" className="icon-large" />{" "}
+            <span className="counter-large">
+              {comment.replies?.length || 0}
+            </span>
+          </div>
           <div className="actionBtns">
             {comment.user === user.displayName ? (
               <>
@@ -268,11 +284,7 @@ const ThreadDetails = () => {
               <span className="counter-large"> {thread.likes}</span>
               <FontAwesomeIcon icon="fa-comment" className="icon-large" />
               <span className="counter-large">
-                {thread.comments?.length +
-                  thread.comments?.reduce(
-                    (acc, comment) => acc + (comment.replies?.length || 0),
-                    0
-                  ) || 0}
+                {totalCommentsAndReplies(thread)}
               </span>
             </div>
           </div>
