@@ -11,6 +11,7 @@ const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
   const [editText, setEditText] = useState("");
   const [user] = useAuthState(auth);
   const { handleError } = useContext(ErrorContext);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (thread) {
@@ -19,8 +20,27 @@ const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
     }
   }, [thread]);
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (editTitle.trim().length < 5) {
+      errors.editTitle = "Title must be at least 5 characters long.";
+    }
+
+    if (editText.trim().length < 10) {
+      errors.editText = "Text must be at least 10 characters long.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       const threadRef = doc(
@@ -54,6 +74,7 @@ const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
               onChange={(e) => setEditTitle(e.target.value)}
               required
             />
+            {errors.editTitle && <p className="error">{errors.editTitle}</p>}
           </div>
           <div>
             <label htmlFor="editText">Text</label>
@@ -63,6 +84,7 @@ const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
               onChange={(e) => setEditText(e.target.value)}
               required
             />
+            {errors.editText && <p className="error">{errors.editText}</p>}
           </div>
           <button type="submit">Update Thread</button>
           <button type="button" onClick={onCancel}>
