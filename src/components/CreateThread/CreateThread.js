@@ -5,88 +5,81 @@ import { auth } from "../../firebase";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import ErrorContext from "../../context/ErrorContext";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+
+const schema = yup.object().shape({
+  title: yup
+    .string()
+    .min(5, "Title must be at least 5 characters long.")
+    .required("Title is required."),
+  text: yup
+    .string()
+    .min(10, "Text must be at least 10 characters long.")
+    .required("Text is required."),
+});
 
 const CreateThread = () => {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
-  const { handleError } = useContext(ErrorContext);
-  const [errors, setErrors] = useState({});
+  const { handleError } = React.useContext(ErrorContext);
 
-  useEffect(() => {
-    const today = new Date().toString().slice(0, 21);
-    setCurrentDate(today);
-  }, []);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const validateForm = () => {
-    const errors = {};
-
-    if (title.trim().length < 5) {
-      errors.title = "Title must be at least 5 characters long.";
-    }
-
-    if (text.trim().length < 10) {
-      errors.text = "Text must be at least 10 characters long.";
-    }
-
-    setErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const onSubmit = async (data) => {
     try {
       const userRef = doc(db, "users", user.displayName);
       const threadsCollectionRef = collection(userRef, "threads");
 
       await addDoc(threadsCollectionRef, {
-        title: title,
-        text: text,
-        date: currentDate,
+        ...data,
+        date: new Date().toString().slice(0, 21),
         username: user.displayName,
         likes: 0,
       });
+
+      navigate("/forum");
     } catch (error) {
       handleError(error.message);
     }
-    setTitle();
-    setText();
-    navigate("/forum");
   };
 
   const handleCancel = () => {
     navigate("/forum");
   };
+
   return (
     <div>
       <h2 className="threadTitle">Create a Thread</h2>
-      <form className="threadForm" onSubmit={handleSubmit}>
+      <form className="threadForm" onSubmit={handleSubmit(onSubmit)}>
         <div className="threadContainer">
-          <label htmlFor="thread">Title</label>
-          <input
-            type="text"
-            name="threadTitle"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+          <label htmlFor="title">Title</label>
+          <Controller
+            name="title"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input type="text" id="title" {...field} required />
+            )}
           />
-          {errors.title && <p className="error">{errors.title}</p>}
+          {errors.title && <p className="error">{errors.title.message}</p>}
 
-          <label htmlFor="thread">Text</label>
-          <textarea
-            name="threadText"
-            required
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+          <label htmlFor="text">Text</label>
+          <Controller
+            name="text"
+            control={control}
+            defaultValue=""
+            render={({ field }) => <textarea id="text" {...field} required />}
           />
-          {errors.text && <p className="error">{errors.text}</p>}
+          {errors.text && <p className="error">{errors.text.message}</p>}
         </div>
         <button type="submit" className="createThreadBtn">
           CREATE THREAD
@@ -98,4 +91,5 @@ const CreateThread = () => {
     </div>
   );
 };
+
 export default CreateThread;
