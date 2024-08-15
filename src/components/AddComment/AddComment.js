@@ -50,6 +50,7 @@ const AddComment = ({
           likes: 0,
           likesList: [],
           date: currentDate,
+          replies: [],
         });
         await updateDoc(threadRef, { comments: updatedComments });
       } else {
@@ -60,6 +61,7 @@ const AddComment = ({
           likes: 0,
           likesList: [],
           date: currentDate,
+          replies: [],
         };
         await updateDoc(threadRef, {
           comments: arrayUnion(newComment),

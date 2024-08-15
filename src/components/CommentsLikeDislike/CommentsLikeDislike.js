@@ -31,11 +31,11 @@ const CommentLikeDislike = ({
       const threadData = threadSnap.data();
       const comments = threadData?.comments || [];
 
-      // Function to find and update the comment or reply
+  
       const updateLikes = (commentsArray, targetId) => {
         return commentsArray.map((comment) => {
           if (comment.id === targetId) {
-            // Ensure likesList is initialized as an array
+            
             const likesList = Array.isArray(comment.likesList)
               ? comment.likesList
               : [];

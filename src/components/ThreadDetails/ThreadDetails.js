@@ -61,6 +61,8 @@ const ThreadDetails = () => {
 
   const handleCancel = () => {
     setEditingThread(null);
+    setReplyTo(null);
+    setNewComment("");
   };
 
   const DeleteThread = async (threadId) => {
@@ -88,7 +90,7 @@ const ThreadDetails = () => {
       const comment = {
         id: Date.now().toString(),
         comment: newComment,
-        user: username,
+        user: user.displayName,
         date: new Date().toLocaleString(),
         likes: 0,
         likesList: [],
@@ -240,7 +242,9 @@ const ThreadDetails = () => {
       {deletionMessage && (
         <div className="deletion-message">{deletionMessage}</div>
       )}
-      <button onClick={() => navigate("/forum")} className="back-Btn">Back</button>
+      <button onClick={() => navigate("/forum")} className="back-Btn">
+        Back
+      </button>
       {thread ? (
         <>
           <h1>{thread.title}</h1>
@@ -299,7 +303,7 @@ const ThreadDetails = () => {
               {replyTo ? "Reply" : "Add Comment"}
             </button>
             {replyTo && (
-              <button onClick={() => setReplyTo(null)}>Cancel Reply</button>
+              <button onClick={() => handleCancel()}>Cancel Reply</button>
             )}
           </div>
           {editingThread && (
