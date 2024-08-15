@@ -65,6 +65,8 @@ const Threads = () => {
         fetchedThreads += userThreads.length;
       }
 
+      allThreads.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       setThreads(allThreads.slice(0, maxThreads));
     } catch (e) {
       handleError(e.message);
