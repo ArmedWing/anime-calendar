@@ -61,7 +61,7 @@ const AnimeDetails = () => {
           if (animeHomePage) {
             setAnime(animeHomePage);
           } else {
-            navigate("/404", { replace: true }); // This will replace the current URL in the history stack with the 404 URL, so if the user presses "back", they won't return to the invalid URL.
+            navigate("/404", { replace: true });
           }
         }
       }
@@ -76,6 +76,10 @@ const AnimeDetails = () => {
 
   return (
     <div>
+      <button onClick={() => navigate(-1)} style={{ marginBottom: "20px" }}>
+        Back
+      </button>
+
       <div className="details-container">
         <div className="leftSection">
           <h1>{anime.title}</h1>
@@ -85,7 +89,7 @@ const AnimeDetails = () => {
         </div>
         <div className="rightSection">
           <p style={{ color: "black" }}>Story:</p>
-          <p>
+          <p className="storyContainer">
             {anime.synopsis && anime.synopsis.length > 10
               ? anime.synopsis.slice(0, -25)
               : anime.synopsis}

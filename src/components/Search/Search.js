@@ -94,7 +94,11 @@ const Search = () => {
             <a href={`${anime.url}`} className="anime-card">
               <div className="anime-title">{anime.title}</div>
             </a>
-            <img src={anime.images.jpg.image_url} alt={anime.title} />{" "}
+            <img
+              src={anime.images.jpg.image_url}
+              alt={anime.title}
+              className="animeImgSearch"
+            />{" "}
             <p>Status: {anime.status}</p>
             <p>Rating: {anime.score}</p>
             <div className="actionsContainer">
@@ -111,7 +115,7 @@ const Search = () => {
                 </button>
               )}
 
-              <Link to={`/anime/${anime.mal_id}`} className="actionBtn">
+              <Link to={`/anime/${anime.mal_id}`} className="actionBtnLink">
                 View Details
               </Link>
             </div>

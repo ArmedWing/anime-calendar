@@ -1,7 +1,11 @@
 .details-container {
   display: flex;
+  justify-content: space-between;
   background-image: linear-gradient(85deg, #61c7ef, #4833fb);
-  padding: 20px;
+  padding-left: 150px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  gap: 20px;
 }
 
 .details-container h1 {
@@ -21,7 +25,7 @@
 
 .details-container img {
   border-radius: 15px;
-  margin-bottom: 20px;
+  height: 400px;
 }
 
 .noAnimes {
@@ -35,10 +39,24 @@
   color: white;
   font-size: 16px;
   text-align: left;
-  /* display: flex; */
-  /* flex-direction: column; */
+  display: flex;
+  flex-direction: column;
 }
 
 .rightSection p {
-  margin-top: 20px;
+  margin-top: 15px;
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex: 3;
+  width: 400px;
+}
+
+.storyContainer {
+  width: 80%;
+  height: auto;
 }

@@ -3,24 +3,23 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  /* justify-content: center; */
-  /* padding: 20px; */
 }
 
 .anime {
   flex: 1 0 21%;
-  height: 600px;
   margin-top: 20px;
   margin-left: 15px;
   margin-right: 10px;
-  /* flex-basis: 15%;
-  flex-grow: 1; */
   max-width: 420px;
   background: linear-gradient(85deg, #61c7ef, #4833fb);
   border-radius: 8px;
   border: 2px solid black;
   text-align: center;
   padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .anime-card {
@@ -82,13 +81,19 @@
   gap: 10px;
 }
 
-.actionBtn {
+.actionBtnLink {
   border: 2px solid;
   border-radius: 6px;
-  padding: 6px;
+  padding: 5px;
   background-image: linear-gradient(85deg, #61c7ef, #4833fb);
   color: white;
   font-size: 18px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.animeImgSearch {
+  height: 350px;
+  object-fit: cover;
+  object-position: center;
 }
