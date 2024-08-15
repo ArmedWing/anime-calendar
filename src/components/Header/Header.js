@@ -3,6 +3,7 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 import defaultImage from "../../images/default.png";
+import { useState } from "react";
 
 const Navigation = {
   marginRight: "10px",
@@ -15,10 +16,15 @@ const Navigation = {
 const Header = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const [showLogout, setShowLogout] = useState(false);
 
   const signUserOut = async () => {
     await signOut(auth);
     navigate("/home");
+  };
+
+  const toggleLogout = () => {
+    setShowLogout((prev) => !prev);
   };
 
   return (
@@ -62,15 +68,22 @@ const Header = () => {
 
       {user && (
         <div className="user">
-          <div className="profile-name-img">
-            <p> {user?.displayName} </p>
+          <div className="profile-name-img" onClick={toggleLogout}>
             <img
               src={user?.photoURL || defaultImage}
               alt="Profile"
               className="profileImg"
+              style={{ cursor: "pointer" }}
             />
           </div>
-          <button onClick={signUserOut}> Log Out </button>
+          {showLogout && (
+            <div>
+              <p>{user?.displayName}</p>
+              <button onClick={signUserOut} className="logoutBtn">
+                Log Out
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
