@@ -4,6 +4,7 @@ export const userSchema = yup.object().shape({
   username: yup
     .string()
     .min(6, "Username must be at least 6 characters")
+    .matches(/^\S*$/, "Username cannot contain spaces")
     .required("Username is required."),
   email: yup
     .string()
