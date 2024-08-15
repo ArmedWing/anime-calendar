@@ -46,7 +46,7 @@
   gap: 10px;
 }
 
-.addEpisodeButton {
+.EpisodeButton {
   background-color: #61c7ef;
   color: white;
   border: none;
@@ -54,6 +54,8 @@
   padding: 3px 7px;
   cursor: pointer;
   margin-left: 5px;
+  width: 25px;
+  height: 25px;
 }
 
 .addEpisodeButton:hover {

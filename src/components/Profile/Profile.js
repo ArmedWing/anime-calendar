@@ -53,6 +53,31 @@ const Profile = () => {
       const userRef = doc(db, "users", user.displayName);
       const animeRef = doc(userRef, "animes", anime.id);
 
+      if (anime.episodesWatched === anime.anime[0].episodes) {
+        return;
+      }
+
+      await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
+      setAnimes((prevAnimes) =>
+        prevAnimes.map((a) =>
+          a.id === anime.id ? { ...a, episodesWatched: newEpisodesWatched } : a
+        )
+      );
+    } catch (error) {
+      handleError(error.message);
+    }
+  };
+
+  const removeEpisode = async (anime) => {
+    try {
+      const newEpisodesWatched = anime.episodesWatched - 1;
+      const userRef = doc(db, "users", user.displayName);
+      const animeRef = doc(userRef, "animes", anime.id);
+
+      if (anime.episodesWatched === 0) {
+        return;
+      }
+
       await updateDoc(animeRef, { episodesWatched: newEpisodesWatched });
       setAnimes((prevAnimes) =>
         prevAnimes.map((a) =>
@@ -135,9 +160,15 @@ const Profile = () => {
                         {anime.anime[0].episodes}
                         <button
                           onClick={() => addEpisode(anime)}
-                          className="addEpisodeButton"
+                          className="EpisodeButton"
                         >
                           +
+                        </button>
+                        <button
+                          onClick={() => removeEpisode(anime)}
+                          className="EpisodeButton"
+                        >
+                          -
                         </button>
                       </p>
                     </div>
