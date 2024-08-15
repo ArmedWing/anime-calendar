@@ -15,6 +15,9 @@ Page404 component: representing a "Page Not Found" error page.
 Auth guard: prevents routes being accessed by not logged in user.
 
 AlreadyAuthenticatedGuard Guard: Prevents the user to go to login and register page when already logged in.
+
+Implemented Pagination
+
 ![2024-08-15 18_18_49-Window](https://github.com/user-attachments/assets/1d8de431-287f-4e25-a617-faedb8dbfa8c)
 ![2024-08-15 18_20_26-Window](https://github.com/user-attachments/assets/7e8f01ae-3921-48cc-868b-8f871cb1c85a)
 ![2024-08-15 18_20_47-Window](https://github.com/user-attachments/assets/f6c05554-2ad4-4daa-9a69-f360a7b2a73c)

@@ -173,18 +173,18 @@ const Home = () => {
                   className="animeImg"
                   alt={anime.title}
                 />
-                <div className="cardText">
+                <div className="cardTextHome">
                   <div className="groupText">
                     <p>Status: {anime.status}</p>
                     <p>Rating: {anime.score}</p>
                   </div>
-                  <div className="actionsContainer">
-                    <a href={anime.trailer.embed_url} className="actionBtn">
+                  <div className="actionsHomeContainer">
+                    <a href={anime.trailer.embed_url} className="actionBtnHome">
                       Watch Trailer
                     </a>
                     {user && (
                       <button
-                        className="actionBtn"
+                        className="actionBtnHome"
                         key={anime.mal_id}
                         onClick={() => addToCalendar(anime)}
                       >
@@ -196,7 +196,7 @@ const Home = () => {
                       to={`/anime/${anime.mal_id}`}
                       state={{ anime }}
                       style={{ textDecoration: "none" }}
-                      className="actionBtn"
+                      className="actionBtnHome"
                     >
                       View Details
                     </Link>

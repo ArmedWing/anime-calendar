@@ -32,10 +32,10 @@
   margin-left: 6px;
 }
 
-.actionsHomeContainer {
+/* .actionsHomeContainer {
   display: flex;
-  justify-content: space-evenly;
-}
+  flex-direction: row;
+} */
 
 .genres {
   background-color: #61c7ef;
@@ -47,7 +47,7 @@
   margin-left: 6px;
 }
 
-.actionBtn {
+.actionBtnHome {
   border: 2px solid;
   border-radius: 6px;
   padding: 6px;
@@ -58,18 +58,11 @@
   cursor: pointer;
 }
 
-.actionsContainer {
+.cardTextHome {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
 }
 
-.actionsContainer > .actionBtn:nth-child(2) {
+.actionsHomeContainer > .actionBtnHome:nth-child(2) {
   padding: 7px;
-}
-
-.actionsContainer > .actionBtn:nth-child(3) {
-  padding: 5px;
 }
