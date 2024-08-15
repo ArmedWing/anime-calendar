@@ -7,19 +7,7 @@ import { auth } from "../../firebase";
 import ErrorContext from "../../context/ErrorContext";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-// Define validation schema with Yup
-const schema = yup.object().shape({
-  editTitle: yup
-    .string()
-    .min(5, "Title must be at least 5 characters long.")
-    .required("Title is required."),
-  editText: yup
-    .string()
-    .min(10, "Text must be at least 10 characters long.")
-    .required("Text is required."),
-});
+import { schemaEdit } from "../Validations/ThreadValidation";
 
 const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
   const [user] = useAuthState(auth);
@@ -31,10 +19,9 @@ const EditThread = ({ thread, thread_id, onUpdate, onCancel }) => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaEdit),
   });
 
-  // Populate form fields with current thread data
   useEffect(() => {
     if (thread) {
       setValue("editTitle", thread.title);

@@ -5,21 +5,11 @@ import { auth } from "../../firebase";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import ErrorContext from "../../context/ErrorContext";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { schema } from "../Validations/ThreadValidation";
 
-const schema = yup.object().shape({
-  title: yup
-    .string()
-    .min(5, "Title must be at least 5 characters long.")
-    .required("Title is required."),
-  text: yup
-    .string()
-    .min(10, "Text must be at least 10 characters long.")
-    .required("Text is required."),
-});
 
 const CreateThread = () => {
   const navigate = useNavigate();
