@@ -214,8 +214,9 @@ const ThreadDetails = () => {
           <p>
             Posted: {comment.date} by {comment.user}
           </p>
-          <div>
-            <FontAwesomeIcon icon="thumbs-up" /> {comment.likes}
+          <div className="like-comment-info">
+            <FontAwesomeIcon icon="thumbs-up" className="icon-large" />{" "}
+            {comment.likes}
             <FontAwesomeIcon icon="comment" className="icon-large" />{" "}
             <span className="counter-large">
               {comment.replies?.length || 0}
@@ -273,10 +274,10 @@ const ThreadDetails = () => {
       </button>
       {thread ? (
         <>
-          <h1>{thread.title}</h1>
-          <p>{thread.text}</p>
+          <p className="thread-title">{thread.title}</p>
+          <article>{thread.text}</article>
           <div className="thread-info">
-            <p>
+            <p className="postedBy">
               Posted: {thread.date} by {thread.username}
             </p>
             <div className="like-comment-info">

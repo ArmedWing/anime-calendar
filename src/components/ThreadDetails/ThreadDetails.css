@@ -50,7 +50,7 @@
 .like-comment-info {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
 }
 
 .thread-actions {
@@ -104,4 +104,17 @@
 
 .cancel-reply-btn:hover {
   color: #0056b3;
+}
+
+.icon-large {
+  color: #007bff;
+}
+
+.thread-title {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 24px;
+}
+
+.postedBy {
+  color: grey;
 }

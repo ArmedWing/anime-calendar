@@ -107,6 +107,7 @@ h2 {
 
 .icon-large {
   font-size: 14px;
+  color: #007bff;
 }
 
 .counter-large {
@@ -127,4 +128,13 @@ h2 {
 
 .cancelBtn {
   background-color: red;
+}
+
+.postedBy {
+  color: grey;
+}
+
+.thread-title {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 24px;
 }

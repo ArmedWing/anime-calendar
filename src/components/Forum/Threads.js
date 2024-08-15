@@ -118,23 +118,25 @@ const Threads = () => {
         {threads && threads.length > 0 ? (
           threads.map((thread) => (
             <div key={thread.id} className="thread">
-              <h2>
-                <a href={`/threads/${thread.username}/${thread.id}`}>
-                  {thread.title}
-                </a>
-              </h2>
+              <a
+                href={`/threads/${thread.username}/${thread.id}`}
+                className="thread-title"
+              >
+                {thread.title}
+              </a>
+
               <article className="textArea">{thread.text}</article>
-              <p>
+              <p className="postedBy">
                 Posted: {thread.date} by {thread.username}
               </p>
-              <p>
+              <div className="like-comment-info">
                 <FontAwesomeIcon icon="thumbs-up" className="icon-large" />{" "}
                 <span className="counter-large"> {thread.likes}</span>{" "}
                 <FontAwesomeIcon icon="comment" className="icon-large" />{" "}
                 <span className="counter-large">
                   {thread.comments?.length || 0}
                 </span>
-              </p>
+              </div>
               {thread.username === user.displayName ? (
                 <div className="actionBtns">
                   <button onClick={() => handleEdit(thread)}>Edit</button>
