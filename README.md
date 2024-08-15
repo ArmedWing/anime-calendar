@@ -18,3 +18,8 @@ AlreadyAuthenticatedGuard Guard: Prevents the user to go to login and register p
 ![2024-08-15 18_18_49-Window](https://github.com/user-attachments/assets/1d8de431-287f-4e25-a617-faedb8dbfa8c)
 ![2024-08-15 18_20_26-Window](https://github.com/user-attachments/assets/7e8f01ae-3921-48cc-868b-8f871cb1c85a)
 ![2024-08-15 18_20_47-Window](https://github.com/user-attachments/assets/f6c05554-2ad4-4daa-9a69-f360a7b2a73c)
+![2024-08-15 18_26_00-Window](https://github.com/user-attachments/assets/749bd637-cfb6-45eb-a72f-3b7a0d266dda)
+![2024-08-15 18_25_54-Window](https://github.com/user-attachments/assets/d452b7eb-71a0-4e8a-8b81-5d932b5a1169)
+![2024-08-15 18_25_44-Window](https://github.com/user-attachments/assets/a564d234-825d-4d97-a56e-f7ea65191b3c)
+![2024-08-15 18_25_25-Window](https://github.com/user-attachments/assets/db5128b3-bff5-4875-a213-31b8752885af)
+![2024-08-15 18_24_42-Window](https://github.com/user-attachments/assets/25ac6773-6498-4501-8856-28da0109e3da)
