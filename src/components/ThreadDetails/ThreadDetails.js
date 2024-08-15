@@ -11,6 +11,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faThumbsUp, faComment } from "@fortawesome/free-solid-svg-icons";
 import ErrorContext from "../../context/ErrorContext";
 import EditThread from "../EditThread/EditThread";
+import { addReply } from "../utils/utils";
+import { findCommentById } from "../utils/utils";
 
 library.add(faThumbsUp, faComment);
 
@@ -44,7 +46,7 @@ const ThreadDetails = () => {
     } catch (error) {
       handleError(error.message);
     }
-  }, [thread_id, user, handleError]);
+  }, [thread_id, user, handleError, comments]);
 
   useEffect(() => {
     fetchThread();
@@ -115,9 +117,13 @@ const ThreadDetails = () => {
     try {
       const threadRef = doc(db, "users", username, "threads", thread_id);
       const threadSnap = await getDoc(threadRef);
+      if (!threadSnap.exists()) return;
+
       const threadData = threadSnap.data() || {};
-      const parentComment = threadData.comments.find(
-        (comment) => comment.id === parentCommentId
+
+      const parentComment = findCommentById(
+        threadData.comments,
+        parentCommentId
       );
 
       if (!parentComment) return;
@@ -125,16 +131,17 @@ const ThreadDetails = () => {
       const newReply = {
         id: Date.now().toString(),
         comment: newComment,
-        user: username,
+        user: user.displayName,
         date: new Date().toLocaleString(),
         likes: 0,
         likesList: [],
+        replies: [],
       };
 
-      const updatedComments = threadData.comments.map((c) =>
-        c.id === parentCommentId
-          ? { ...c, replies: [...(c.replies || []), newReply] }
-          : c
+      const updatedComments = addReply(
+        threadData.comments,
+        parentComment,
+        newReply
       );
 
       await updateDoc(threadRef, { comments: updatedComments });
@@ -149,13 +156,7 @@ const ThreadDetails = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const threadRef = doc(
-        db,
-        "users",
-        user.displayName,
-        "threads",
-        thread_id
-      );
+      const threadRef = doc(db, "users", username, "threads", thread_id);
       const threadSnap = await getDoc(threadRef);
       const threadData = threadSnap.data() || {};
 
@@ -173,7 +174,7 @@ const ThreadDetails = () => {
       };
 
       const updatedComments = removeCommentOrReply(
-        threadData.comments,
+        threadData.comments || [],
         commentId
       );
       await updateDoc(threadRef, { comments: updatedComments });
@@ -181,6 +182,10 @@ const ThreadDetails = () => {
     } catch (error) {
       handleError(error.message);
     }
+  };
+
+  const handleReplyButtonClick = (comment) => {
+    setReplyTo(comment);
   };
 
   const renderComments = (comments, thread, replyTo = null) => {
@@ -200,37 +205,42 @@ const ThreadDetails = () => {
           <p>
             <FontAwesomeIcon icon="thumbs-up" /> {comment.likes}
           </p>
-          {comment.user === user.displayName ? (
-            <div className="actionBtns">
-              <button onClick={() => handleDeleteComment(comment.id)}>
-                Delete
-              </button>
-              <button onClick={() => setReplyTo(comment)}>Reply</button>
-              <CommentLikeDislike
-                userName={thread.username}
-                threadId={thread_id}
-                commentId={comment.id}
-                initialLikes={comment.likes}
-                likedByUser={
-                  comment.likesList?.includes(user.displayName) || false
-                }
-                onUpdate={() => fetchThread()}
-              />
-            </div>
-          ) : (
-            <div className="actionBtns">
-              <button onClick={() => setReplyTo(comment)}>Reply</button>
-              <ThreadLikeDislike
-                userName={thread.username}
-                threadId={thread.id}
-                initialLikes={thread.likes}
-                likedByUser={
-                  thread.likesList?.includes(user.displayName) || false
-                }
-                onUpdate={() => fetchThread()}
-              />
-            </div>
-          )}
+          <div className="actionBtns">
+            {comment.user === user.displayName ? (
+              <>
+                <button onClick={() => handleDeleteComment(comment.id)}>
+                  Delete
+                </button>
+                <button onClick={() => handleReplyButtonClick(comment)}>
+                  Reply
+                </button>
+                <CommentLikeDislike
+                  userName={thread.username}
+                  threadId={thread_id}
+                  commentId={comment.id}
+                  initialLikes={comment.likes}
+                  likedByUser={
+                    comment.likesList?.includes(user.displayName) || false
+                  }
+                  onUpdate={() => fetchThread()}
+                />
+              </>
+            ) : (
+              <>
+                <button onClick={() => setReplyTo(comment)}>Reply</button>
+                <CommentLikeDislike
+                  userName={thread.username}
+                  threadId={thread_id}
+                  commentId={comment.id}
+                  initialLikes={comment.likes}
+                  likedByUser={
+                    comment.likesList?.includes(user.displayName) || false
+                  }
+                  onUpdate={() => fetchThread()}
+                />
+              </>
+            )}
+          </div>
         </div>
         {comment.replies && renderComments(comment.replies, thread, comment)}
       </div>
@@ -278,9 +288,7 @@ const ThreadDetails = () => {
             />
             {thread.username === user.displayName && (
               <div>
-                <button thread={thread_id} onClick={() => handleEdit(thread)}>
-                  Edit
-                </button>
+                <button onClick={() => handleEdit(thread)}>Edit</button>
                 <button onClick={() => DeleteThread(thread_id)}>Delete</button>
               </div>
             )}

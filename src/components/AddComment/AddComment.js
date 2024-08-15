@@ -5,6 +5,7 @@ import { useId } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import ErrorContext from "../../context/ErrorContext";
+import { addReply } from "../utils/utils";
 
 const AddComment = ({
   thread,
@@ -92,23 +93,7 @@ const AddComment = ({
     });
   };
 
-  const addReply = (comments, parent, newReply) => {
-    return comments.map((comment) => {
-      if (comment.id === parent.id) {
-        return {
-          ...comment,
-          replies: [...(comment.replies || []), newReply],
-        };
-      } else {
-        return {
-          ...comment,
-          replies: comment.replies
-            ? addReply(comment.replies, parent, newReply)
-            : [],
-        };
-      }
-    });
-  };
+  
 
   return (
     <div className="edit-modal">
