@@ -1,22 +1,41 @@
-This is my project for SoftUni ReactJS course.
+# Anime Tracker Project
 
-The idea is for the user to be able to search for an anime, see details about it, add it to his profile and keep track of the episodes watched. There is also a forum where users can discuss different topics.
+This project was developed as part of the SoftUni ReactJS course.
 
-The project uses the React library for the front end and firebase as db and authentication. For for form validation I use yup library. For the anime search I use jikan API.
+## Project Overview
 
-The project is split into private and public part. When you are not logged in, you can only search for anime and see its details, but not add it to profile, keep track of episodes watcher or create thread or comment.
+The main purpose of this project is to allow users to search for anime, view detailed information, add anime to their profile, and keep track of watched episodes. Additionally, users can engage in discussions through the forum.
 
-The project also has: ErrorBoundary: designed to catch JavaScript errors anywhere in the child component tree, log those errors, and display a fallback UI.
+### Key Features
 
-Message component: displays to the users certain messages when he does something (eg add/delete anime in profile)
+- **Anime Search:** Users can search for anime using the Jikan API and view detailed information about each anime.
+- **Profile Management:** Logged-in users can add anime to their profile and track episodes they've watched.
+- **Forum:** A platform where users can discuss various topics related to anime.
+- **Form Validation:** Implemented using the Yup library to ensure data integrity in forms.
 
-Page404 component: representing a "Page Not Found" error page.
+### Public vs. Private Access
 
-Auth guard: prevents routes being accessed by not logged in user.
+- **Public Access:**
+  - Search for anime and view details.
+- **Private Access (Logged-in Users):**
+  - Add anime to profile and track watched episodes.
+  - Create and participate in forum threads and comments.
 
-AlreadyAuthenticatedGuard Guard: Prevents the user to go to login and register page when already logged in.
+## Additional Features
 
-Implemented Pagination
+- **ErrorBoundary:** Catches JavaScript errors in the component tree, logs them, and displays a fallback UI to the user.
+- **Message Component:** Provides feedback to the user for actions such as adding or deleting anime from their profile.
+- **Page404 Component:** Displays a "Page Not Found" error page for invalid routes.
+- **AuthGuard:** Protects routes from being accessed by users who are not logged in.
+- **AlreadyAuthenticatedGuard:** Prevents logged-in users from accessing the login and register pages.
+- **Pagination:** Implemented to handle large sets of data efficiently.
+
+## Technologies Used
+
+- **React:** For building the front-end of the application.
+- **Firebase:** Used for database management and user authentication.
+- **Yup:** For form validation.
+- **Jikan API:** For fetching anime data.
 
 ![2024-08-15 18_18_49-Window](https://github.com/user-attachments/assets/1d8de431-287f-4e25-a617-faedb8dbfa8c)
 ![2024-08-15 18_20_26-Window](https://github.com/user-attachments/assets/7e8f01ae-3921-48cc-868b-8f871cb1c85a)
